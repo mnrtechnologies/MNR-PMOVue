@@ -12,7 +12,9 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/update-password/:token" element={<UpdatePassword />} />
+        
+      <Route path="/" element={<Home />} />
+        {/* <Route path="/update-password/:token" element={<UpdatePassword />} />
         <Route path="/" element={<Login />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -21,7 +23,7 @@ const App = () => {
         <Route path="/" element={<Navigate to="/dashboard" replace />} /> */}
 
         {/* Protected Dashboard Routes */}
-        <Route
+        {/* <Route
           path="/dashboard"
           element={
             <PrivateRoute>
@@ -32,7 +34,7 @@ const App = () => {
           <Route index element={<Home/>} />
           <Route path="projects" element={<Home/>} />
 
-        </Route>
+        </Route>  */}
       </Routes>
     </Router>
   );
