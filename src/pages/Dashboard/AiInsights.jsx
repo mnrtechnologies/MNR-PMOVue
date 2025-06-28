@@ -45,7 +45,7 @@ const JiraCard = ({
   assigneeName,
   borderColor,
 }) => (
-  <div className="bg-white rounded-xl shadow-sm p-5 border border-transparent hover:border-gray-200">
+  <div className="bg-[#F9FAFB]  rounded-xl shadow-sm p-5 border border-transparent hover:border-gray-200">
     <div className="flex justify-between items-center mb-3">
       <div className="text-xs text-gray-400 font-semibold">
         <span>{startDate}</span>
@@ -177,40 +177,52 @@ const Dashboard = () => {
     ...item,
   }));
 
-  const filterMap = {
-    todo: ["Delay"],
-    inprogress: ["On Track"],
-    complete: ["Complete"],
-  };
-
   const filters = [
     { id: "todo", label: "To Do", color: "text-gray-700" },
     { id: "inprogress", label: "In Progress", color: "text-orange-500" },
     { id: "complete", label: "Complete", color: "text-green-500" },
   ];
 
-  const getFilteredJira = () =>
-    jiraData.filter((item) => filterMap[selectedFilter].includes(item.status));
-  const getFilteredGoogle = () =>
-    googleData.filter((item) => item.status === selectedFilter);
-
-  const jiraCounts = {
-    todo: jiraData.filter((d) => filterMap.todo.includes(d.status)).length,
-    inprogress: jiraData.filter((d) => filterMap.inprogress.includes(d.status))
-      .length,
-    complete: jiraData.filter((d) => filterMap.complete.includes(d.status))
-      .length,
+  const getFilteredCards = () => {
+    if (selectedView === "jira") {
+      const map = {
+        todo: ["Delay"],
+        inprogress: ["On Track"],
+        complete: ["Complete"],
+      };
+      return jiraData.filter((item) =>
+        map[selectedFilter].includes(item.status)
+      );
+    } else {
+      return googleData.filter((item) => item.status === selectedFilter);
+    }
   };
 
-  const googleCounts = {
-    todo: googleData.filter((d) => d.status === "todo").length,
-    inprogress: googleData.filter((d) => d.status === "inprogress").length,
-    complete: googleData.filter((d) => d.status === "complete").length,
+  const getCounts = () => {
+    if (selectedView === "jira") {
+      const map = {
+        todo: ["Delay"],
+        inprogress: ["On Track"],
+        complete: ["Complete"],
+      };
+      return {
+        todo: jiraData.filter((d) => map.todo.includes(d.status)).length,
+        inprogress: jiraData.filter((d) => map.inprogress.includes(d.status))
+          .length,
+        complete: jiraData.filter((d) => map.complete.includes(d.status))
+          .length,
+      };
+    } else {
+      return {
+        todo: googleData.filter((d) => d.status === "todo").length,
+        inprogress: googleData.filter((d) => d.status === "inprogress").length,
+        complete: googleData.filter((d) => d.status === "complete").length,
+      };
+    }
   };
 
-  const activeCounts = selectedView === "jira" ? jiraCounts : googleCounts;
-  const filteredCards =
-    selectedView === "jira" ? getFilteredJira() : getFilteredGoogle();
+  const activeCounts = getCounts();
+  const filteredCards = getFilteredCards();
 
   return (
     <div className="max-w-[1200px] mx-auto p-6">
@@ -230,25 +242,28 @@ const Dashboard = () => {
           />
         ))}
 
-        {/* 🟡 Dropdown for Jira / Google View */}
         <div className="ml-auto">
-          <div className="relative">
+          <div className="relative inline-block">
             <select
               value={selectedView}
               onChange={(e) => setSelectedView(e.target.value)}
-              className="appearance-none bg-white border border-gray-300 text-[#002E5D] font-semibold text-sm rounded-full px-6 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+              className="appearance-none bg-white border border-blue-300 text-[#002E5D] font-semibold text-sm rounded-full px-6 py-2 pr-10 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-blue-400 cursor-pointer transition-all"
             >
-              <option value="jira">Jira View</option>
-              <option value="google">Google View</option>
+              <option value="jira">🌐 Google View</option>
+              <option value="google">🚀 Jira View </option>
             </select>
-            <div className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+            <div className="pointer-events-none absolute right-4 top-1/2 transform -translate-y-1/2 text-blue-400 text-sm">
               ▼
             </div>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div
+        className={`grid grid-cols-1 sm:grid-cols-2 ${
+          selectedView === "jira" ? "lg:grid-cols-3" : "lg:grid-cols-4"
+        } gap-6`}
+      >
         {filteredCards.map((card, index) =>
           selectedView === "jira" ? (
             <JiraCard key={index} {...card} />

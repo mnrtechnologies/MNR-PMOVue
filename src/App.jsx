@@ -9,7 +9,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Home from "./pages/Dashboard/Home";
 import Navbar from "./components/Dashboard/Navbar";
 import AiInsights from "./pages/Dashboard/AiInsights";
-import AiInsights2 from "./pages/Dashboard/AiInsights2";
+//import AiInsights2 from "./pages/Dashboard/AiInsights2";
 import ProfileManagement from "./pages/Dashboard/ProfileManagement";
 import PasswordAuthentication from "./pages/Dashboard/PasswordAuthentication";
 

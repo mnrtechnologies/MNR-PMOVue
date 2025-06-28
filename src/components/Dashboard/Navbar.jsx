@@ -1,14 +1,13 @@
-import React, { useState, useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
-import { setToken } from '../../slices/authSlice';
-import { setUser } from '../../slices/profileSlice';
-import { Search, Bell, User, ChevronDown, LogOut } from 'lucide-react';
+import React, { useState, useMemo } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Search, Bell, User, LogOut } from "lucide-react";
 import logo from "../../assets/logo.png";
+import { logout } from "../../services/oprations/authAPI";
 
 const Navbar = () => {
   const { pathname } = useLocation();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.profile);
@@ -25,26 +24,20 @@ const Navbar = () => {
     { to: "/dashboard/settings/password", label: "Password & Authentication" },
   ];
 
-const activeLabel = useMemo(() => {
-  const allLinks = [...mainLinks, ...settingsLinks];
+  const activeLabel = useMemo(() => {
+    const allLinks = [...mainLinks, ...settingsLinks];
 
-  // Find the longest matching prefix
-  const found = allLinks
-    .filter(link => pathname.startsWith(link.to))
-    .sort((a, b) => b.to.length - a.to.length)[0];
+    // Find the longest matching prefix
+    const found = allLinks
+      .filter((link) => pathname.startsWith(link.to))
+      .sort((a, b) => b.to.length - a.to.length)[0];
 
-  return found ? found.label : "Dashboard";
-}, [pathname]);
-   
+    return found ? found.label : "Dashboard";
+  }, [pathname]);
 
   const handleLogout = () => {
-    dispatch(setToken(null));
-    dispatch(setUser(null));
-    setIsMenuOpen(false);
+    dispatch(logout(navigate));
   };
-
-
-
 
   return (
     <header className="bg-[#F6FAF9] px-6 py-4 flex justify-between items-center shadow-sm z-10 w-full">
@@ -53,26 +46,26 @@ const activeLabel = useMemo(() => {
         {/* Logo & Tagline */}
         <div className="flex items-center space-x-2">
           <img src={logo} alt="PortfolioVue Logo" className="h-16 rounded-md" />
-         
         </div>
         {/* Page Title */}
         <h2 className="text-lg ml-20 font-semibold text-[#012950] hidden sm:block">
-         {activeLabel}
+          {activeLabel}
         </h2>
       </div>
 
       {/* Right: Search + Notification + Profile */}
       <div className="flex items-center space-x-6">
         {/* Search */}
-        <div className="relative hidden md:block">
-          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-            <Search className="w-5 h-5" />
-          </div>
+        {/* Search Bar Styled Like Image */}
+        <div className="relative hidden md:block mr-5">
           <input
             type="text"
             placeholder="Search Here......"
-            className="pl-10 pr-4 py-2 rounded-full border border-gray-200 shadow-sm w-64 focus:outline-none focus:ring-2 focus:ring-blue-200 transition"
+            className="pl-5 pr-10 py-2 rounded-full w-80 bg-white text-[#002E5D] placeholder:text-[#002E5D] shadow-md focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all"
           />
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-[#002E5D]">
+            <Search className="w-5 h-5" />
+          </div>
         </div>
 
         {/* Notification Icon with Badge */}
@@ -83,54 +76,16 @@ const activeLabel = useMemo(() => {
           </span>
         </div>
 
-        {/* Profile Dropdown */}
-        {token ? (
-          <div className="relative">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="flex items-center space-x-2 cursor-pointer p-1 rounded-lg hover:bg-gray-100"
-            >
-              <div className="w-8 h-8 rounded-full bg-[#012950] flex items-center justify-center text-white font-bold">
-                <User className="w-4 h-4" />
-              </div>
-              <span className="hidden sm:inline font-medium text-[#012950]">
-                {user?.name || 'User'}
-              </span>
-              <ChevronDown className="text-[#012950]" />
-            </button>
+        {/* user*/}
 
-            {isMenuOpen && (
-              <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                <div className="py-1">
-                  <div className="px-4 py-3 border-b">
-                    <p className="text-sm font-medium text-gray-900 truncate">
-                      {user?.name}
-                    </p>
-                    <p className="text-sm text-gray-500 truncate">
-                      {user?.email}
-                    </p>
-                  </div>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Settings
-                  </a>
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                  >
-                    Log out
-                  </button>
-                </div>
-              </div>
-            )}
+        <button className="flex items-center space-x-2 cursor-pointer p-1 rounded-lg hover:bg-gray-100">
+          <div className="w-8 h-8 rounded-full bg-[#012950] flex items-center justify-center text-white font-bold">
+            <User className="w-4 h-4" />
           </div>
-        ) : (
-          <button className="bg-[#012950] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#011f3f]">
-            Login
-          </button>
-        )}
+          <span className="hidden sm:inline font-medium text-[#012950]">
+            {user?.firstName || "User"}
+          </span>
+        </button>
 
         {/* Optional: Logout icon on far right */}
         {token && (

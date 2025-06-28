@@ -129,6 +129,17 @@ export function signin(email, password, otp, navigate) {
   };
 }
 
+export function logout(navigate) {
+  return (dispatch) => {
+    dispatch(setToken(null));
+    dispatch(setUser(null));
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    toast.success("Logged Out");
+    navigate("/");
+  };
+}
+
 // export function login(email, password, navigate) {
 //   return async (dispatch) => {
 //     const toastId = toast.loading("Loading...");
