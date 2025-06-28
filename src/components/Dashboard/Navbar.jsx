@@ -1,15 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { setToken } from '../../slices/authSlice';
 import { setUser } from '../../slices/profileSlice';
 import { Search, Bell, User, ChevronDown, LogOut } from 'lucide-react';
-import logo from "../../assets/logo.png"
+import logo from "../../assets/logo.png";
 
 const Navbar = () => {
+  const { pathname } = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.profile);
+
+  // 🔁 Define the links before using them in useMemo
+  const mainLinks = [
+    { to: "/dashboard", label: "Dashboard" },
+    { to: "/dashboard/insights", label: "AI Insights" },
+    { to: "/dashboard/projects", label: "Projects" },
+  ];
+
+  const settingsLinks = [
+    { to: "/dashboard/settings/profile", label: "Profile Management" },
+    { to: "/dashboard/settings/password", label: "Password & Authentication" },
+  ];
+
+const activeLabel = useMemo(() => {
+  const allLinks = [...mainLinks, ...settingsLinks];
+
+  // Find the longest matching prefix
+  const found = allLinks
+    .filter(link => pathname.startsWith(link.to))
+    .sort((a, b) => b.to.length - a.to.length)[0];
+
+  return found ? found.label : "Dashboard";
+}, [pathname]);
+   
 
   const handleLogout = () => {
     dispatch(setToken(null));
@@ -17,18 +43,21 @@ const Navbar = () => {
     setIsMenuOpen(false);
   };
 
+
+
+
   return (
     <header className="bg-[#F6FAF9] px-6 py-4 flex justify-between items-center shadow-sm z-10 w-full">
       {/* Left: Logo + Title */}
       <div className="flex items-center ">
         {/* Logo & Tagline */}
         <div className="flex items-center space-x-2">
-          <img src={logo} alt="PortfolioVue Logo" className="h-16" />
+          <img src={logo} alt="PortfolioVue Logo" className="h-16 rounded-md" />
          
         </div>
         {/* Page Title */}
         <h2 className="text-lg ml-20 font-semibold text-[#012950] hidden sm:block">
-          Dashboard
+         {activeLabel}
         </h2>
       </div>
 
