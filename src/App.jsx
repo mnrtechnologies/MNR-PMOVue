@@ -6,6 +6,7 @@ import VerifyEmail from "./pages/authPage/VerifyEmail";
 import UpdatePassword from "./pages/authPage/updatePassword";
 import PrivateRoute from "./components/common/PrivateRoute";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import Home from "./pages/Dashboard/Home";
 
 const App = () => {
   return (
@@ -28,8 +29,8 @@ const App = () => {
             </PrivateRoute>
           }
         >
-          {/* <Route index element={} />
-          <Route path="projects" element={} /> */}
+          <Route index element={<Home/>} />
+          <Route path="projects" element={<Home/>} />
 
         </Route>
       </Routes>
