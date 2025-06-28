@@ -36,7 +36,7 @@ const App = () => {
           }
         >
           <Route index element={<Home />} />
-          <Route path="projects" element={<AiInsights2/>} />
+          <Route path="projects" element={<Home/>} />
           <Route path="insights" element={<AiInsights/>} />
           <Route path="settings">
             <Route path="profile" element={<ProfileManagement/>} />
