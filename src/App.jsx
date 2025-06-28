@@ -7,6 +7,7 @@ import UpdatePassword from "./pages/authPage/updatePassword";
 import PrivateRoute from "./components/common/PrivateRoute";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Home from "./pages/Dashboard/Home";
+import Navbar from "./components/Dashboard/Navbar";
 
 const App = () => {
   return (
@@ -25,13 +26,18 @@ const App = () => {
           path="/dashboard"
           element={
             <PrivateRoute>
-              <Dashboard/>
+              <Navbar />
+              <Dashboard />
             </PrivateRoute>
           }
         >
-          <Route index element={<Home/>} />
-          <Route path="projects" element={<Home/>} />
-
+          <Route index element={<Home />} />
+          <Route path="projects" element={<Home />} />
+          <Route path="insights" element={<Home />} />
+          <Route path="settings">
+            <Route path="profile" element={<Home />} />
+            <Route path="password" element={<Home />} />
+          </Route>
         </Route>
       </Routes>
     </Router>

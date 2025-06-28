@@ -2,28 +2,29 @@ import { useSelector } from "react-redux"
 import { Outlet } from "react-router-dom"
 
 import Sidebar from "../../components/Dashboard/Sidebar"
-import ProgramSummary from '../../components/Dashboard/widgets/ProgramSummary';
-import AIMLPredictionScore from '../../components/Dashboard/widgets/AIMLPredictionScore';
 
-const Dashboard = () => {
+function Dashboard() {
+  const { loading: profileLoading } = useSelector((state) => state.profile)
+  const { loading: authLoading } = useSelector((state) => state.auth)
 
+  if (profileLoading || authLoading) {
     return (
-        <main className="p-4 sm:p-6 lg:p-8">
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-                {/* Column 1 */}
-                <div className="col-span-1 xl:col-span-2 space-y-6">
-                    <ProgramSummary />
-                    {/* Add more widgets like SpendAndAccruals here */}
-                </div>
-                
-                {/* Column 2 */}
-                <div className="col-span-1 space-y-6">
-                    <AIMLPredictionScore />
-                    {/* Add more widgets like IssueRiskCount and Tasks here */}
-                </div>
-            </div>
-        </main>
-    );
-};
+      <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
+        <div className="spinner"></div>
+      </div>
+    )
+  }
 
-export default Dashboard;
+  return (
+    <div className="relative flex min-h-[calc(100vh-3.5rem)]">
+      <Sidebar />
+      <div className="h-[calc(100vh-3.5rem)] flex-1 overflow-auto">
+        <div className="mx-auto w-11/12 max-w-[1000px] py-10">
+          <Outlet />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Dashboard

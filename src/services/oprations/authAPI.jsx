@@ -118,7 +118,7 @@ export function signin(email, password, otp, navigate) {
 
       dispatch(setUser({ ...response.data.user }));
       localStorage.setItem("token", JSON.stringify(response.data.token));
-      navigate("/dashboard/my-profile");
+      navigate("/dashboard");
     } catch (error) {
       console.log("SIGNin API ERROR............", error);
       toast.error("Signin Failed");
