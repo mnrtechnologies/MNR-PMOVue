@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Card from '../../ui/card';
+import {Card} from '../../ui/card';
 
 const PredictionSlider = ({ label, value, onValueChange }) => (
     <div className="w-full">

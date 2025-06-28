@@ -1,6 +1,6 @@
 import React from 'react';
-import Card from '../../ui/card';
-import { programSummaryData } from '../../data/mockData';
+import {Card} from '../../ui/card';
+import  programSummaryData  from '../../../data/mockdata';
 
 const ProgramSummary = () => (
     <Card title="Program & Portfolio Summary">
