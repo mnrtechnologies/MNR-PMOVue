@@ -9,6 +9,9 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Home from "./pages/Dashboard/Home";
 import Navbar from "./components/Dashboard/Navbar";
 import AiInsights from "./pages/Dashboard/AiInsights";
+import AiInsights2 from "./pages/Dashboard/AiInsights2";
+import ProfileManagement from "./pages/Dashboard/ProfileManagement";
+import PasswordAuthentication from "./pages/Dashboard/PasswordAuthentication";
 
 const App = () => {
   return (
@@ -33,11 +36,11 @@ const App = () => {
           }
         >
           <Route index element={<Home />} />
-          <Route path="projects" element={<Home />} />
+          <Route path="projects" element={<AiInsights2/>} />
           <Route path="insights" element={<AiInsights/>} />
           <Route path="settings">
-            <Route path="profile" element={<Home />} />
-            <Route path="password" element={<Home />} />
+            <Route path="profile" element={<ProfileManagement/>} />
+            <Route path="password" element={<PasswordAuthentication/>} />
           </Route>
         </Route>
       </Routes>
