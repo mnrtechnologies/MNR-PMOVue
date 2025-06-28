@@ -44,7 +44,7 @@ const ProfileSettings = () => {
               <img
                 src={Profile}
                 alt="Profile"
-                className="absolute top-1/2 left-1/2 w-16 h-16 rounded-full transform -translate-x-1/2 -translate-y-1/2"
+                className="absolute top-1/2 left-1/2 w-16 h-16  transform -translate-x-1/2 -translate-y-1/2"
               />
             </div>
 
