@@ -37,7 +37,7 @@ const App = () => {
         >
           <Route index element={<Home />} />
           <Route path="projects" element={<Home/>} />
-          <Route path="insights" element={<AiInsights/>} />
+          <Route path="insights/:projectName" element={<AiInsights/>} />
           <Route path="settings">
             <Route path="profile" element={<ProfileManagement/>} />
             <Route path="password" element={<PasswordAuthentication/>} />

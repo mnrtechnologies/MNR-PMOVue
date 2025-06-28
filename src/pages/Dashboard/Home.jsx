@@ -4,7 +4,7 @@ import AIMLPredictionScore from '../../components/Dashboard/widgets/AIMLPredicti
 import SchedulePerformance from '../../components/Dashboard/widgets/SchedulePerformance';
 import BudgetHealth from '../../components/Dashboard/widgets/BudgetHealth';
 import IssueRiskCount from '../../components/Dashboard/widgets/IssueRiskCount';
-import Tasks from '../../components/Dashboard/widgets/Tasks';
+
 import ChangeRiskTracking from '../../components/Dashboard/widgets/ChangeRiskTracking';
 import VendorContractOverview from '../../components/Dashboard/widgets/VendorContractOverview';
 import SpendAndAccruals from '../../components/Dashboard/widgets/SpendAndAccruals';
@@ -12,32 +12,30 @@ import SpendAndAccruals from '../../components/Dashboard/widgets/SpendAndAccrual
 const Home = () => {
     return (
         <main className="p-4 sm:p-6 lg:p-8">
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-                {/* Left Column (takes up 2/3 of the space on large screens) */}
-                <div className="col-span-1 xl:col-span-2 space-y-6">
+            {/* Main grid with a 2/3 and 1/3 column split on large screens */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                {/* --- Left Column (Wider) --- */}
+                <div className="lg:col-span-2 space-y-6">
                     <ProgramSummary />
+                    
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                         <SchedulePerformance />
-                         <BudgetHealth />
+                        <SchedulePerformance />
+                        <BudgetHealth />
                     </div>
                     <VendorContractOverview />
-                </div>
-                
-                {/* Right Column (takes up 1/3 of the space on large screens) */}
-                <div className="col-span-1 space-y-6">
-                    <AIMLPredictionScore />
-                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-1 gap-6">
-                        <IssueRiskCount />
-                        <Tasks />
-                    </div>
                     <ChangeRiskTracking />
                 </div>
-            </div>
+                
+                {/* --- Right Column (Narrower) --- */}
+                <div className="col-span-1 space-y-6">
+                    <AIMLPredictionScore />
+                    <IssueRiskCount />
+                     <SpendAndAccruals />
+                </div>
 
-            {/* Bottom Row (full width) */}
-            <div className="mt-6">
-                 <SpendAndAccruals />
             </div>
+            {/* The separate bottom row has been removed */}
         </main>
     );
 };

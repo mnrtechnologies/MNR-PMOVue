@@ -1,24 +1,70 @@
 export const programSummaryData = [
-  { program: 'Titan', psm: 'A. Grant', health: 'On Track', capex: 15.2, opex: 8.5, budget: 23.7, forecast: 23.7, variance: 0, status: 'Active' },
-  { program: 'Apollo', psm: 'B. Vance', health: 'On Track', capex: 12.0, opex: 6.0, budget: 18.0, forecast: 18.0, variance: 0, status: 'Active' },
-  { program: 'Mercury', psm: 'C. Hayes', health: 'Minor-Risk', capex: 8.0, opex: 4.5, budget: 12.5, forecast: 13.0, variance: -0.5, status: 'Active' },
-  { program: 'Gemini', psm: 'D. Cain', health: 'Major-Risk', capex: 20.0, opex: 10.0, budget: 30.0, forecast: 32.0, variance: -2.0, status: 'Pending' },
-  { program: 'Skylab', psm: 'E. Shaw', health: 'On Track', capex: 5.0, opex: 2.5, budget: 7.5, forecast: 7.5, variance: 0, status: 'Completed' },
+  {
+    program: 'Alpha',
+    portfolio: 'Growth',
+    project: 'Dntc A',
+    statuses: [
+      { status: 'On Track', milestoneStatus: 'Completed' }
+    ]
+  },
+  {
+    program: 'Gamma',
+    portfolio: 'Enterprise',
+    project: 'BAC&B',
+    statuses: [
+      { status: 'At Risk', milestoneStatus: 'Delayed' },
+      { status: 'Delayed', milestoneStatus: 'Delayed' }
+    ]
+  },
+  {
+    program: 'Apollo',
+    portfolio: 'Innovation',
+    project: 'Project Phoenix',
+    statuses: [
+        { status: 'On Track', milestoneStatus: 'In Progress' }
+    ]
+  },
+  {
+    program: 'Mercury',
+    portfolio: 'Enterprise',
+    project: 'Data Warehouse Upgrade',
+    statuses: [
+        { status: 'At Risk', milestoneStatus: 'Delayed' },
+        { status: 'Delayed', milestoneStatus: 'Delayed' },
+        { status: 'Delayed', milestoneStatus: 'Delayed' }
+    ]
+  },
+  {
+    program: 'Beta',
+    portfolio: 'Growth',
+    project: 'Mobile App V2',
+    statuses: [
+        { status: 'Completed', milestoneStatus: 'Completed' }
+    ]
+  }
 ];
 
 export const schedulePerformanceData = [
-  { name: 'Project A', value: 80 },
-  { name: 'Project B', value: 60 },
-  { name: 'Project C', value: 95 },
-  { name: 'Project D', value: 40 }
+  { name: 'Jan', darkBlue: 60, lightBlue: 30 },
+  { name: 'Feb', darkBlue: 75, lightBlue: 20 },
+  { name: 'Mar', darkBlue: 40, lightBlue: 45 },
+  { name: 'Apr', darkBlue: 80, lightBlue: 15 },
+  { name: 'May', darkBlue: 55, lightBlue: 35 },
+  { name: 'Jun', darkBlue: 70, lightBlue: 25 },
+  { name: 'Jul', darkBlue: 62, lightBlue: 28 },
 ];
 
+
 export const budgetHealthData = [
-  { name: 'Project A', value: 90 },
-  { name: 'Project B', value: 75 },
-  { name: 'Project C', value: 85 },
-  { name: 'Project D', value: 60 }
+  { name: 'Jan', darkBlue: 50, lightBlue: 40 },
+  { name: 'Feb', darkBlue: 65, lightBlue: 25 },
+  { name: 'Mar', darkBlue: 30, lightBlue: 55 },
+  { name: 'Apr', darkBlue: 70, lightBlue: 20 },
+  { name: 'May', darkBlue: 45, lightBlue: 40 },
+  { name: 'Jun', darkBlue: 80, lightBlue: 10 },
+  { name: 'Jul', darkBlue: 58, lightBlue: 32 },
 ];
+
 
 export const spendAndAccrualsData = [
   { name: 'Jan', Spend: 4000, Accruals: 2400 },
@@ -29,22 +75,157 @@ export const spendAndAccrualsData = [
   { name: 'Jun', Spend: 2390, Accruals: 3800 }
 ];
 
+
+
 export const vendorContractData = [
-  { vendor: 'Innovate LLC', po: 'PO-12345', startDate: '01/01/2024', endDate: '12/31/2024', ceilingValue: '$250,000', costType: 'Fixed Bid', status: 'Active' },
-  { vendor: 'Synergy Inc.', po: 'PO-67890', startDate: '03/15/2024', endDate: '03/14/2025', ceilingValue: '$500,000', costType: 'T&M', status: 'Active' },
-  { vendor: 'Solutions Corp', po: 'PO-24680', startDate: '02/01/2024', endDate: '01/31/2025', ceilingValue: '$175,000', costType: 'Fixed Bid', status: 'On-Hold' }
+  { 
+    vendor: 'Innovate LLC', 
+    contractId: 'PO-12345', 
+    startDate: '01/15/2024', 
+    endDate: '01/14/2025', 
+    ceilingValue: 250000, 
+    costType: 'Fixed Bid', 
+    variance: -5000,
+    status: 'Active',
+    invoiceStatus: 'Paid',
+    projectManager: 'Alice Grant' 
+  },
+  { 
+    vendor: 'Synergy Inc.', 
+    contractId: 'PO-67890', 
+    startDate: '03/15/2024', 
+    endDate: '03/14/2025', 
+    ceilingValue: 500000, 
+    costType: 'T&M', 
+    variance: 12500,
+    status: 'Active',
+    invoiceStatus: 'Pending',
+    projectManager: 'Ben Vance' 
+  },
+  { 
+    vendor: 'Solutions Corp', 
+    contractId: 'PO-24680', 
+    startDate: '02/01/2024', 
+    endDate: '01/31/2025', 
+    ceilingValue: 175000, 
+    costType: 'Fixed Bid',
+    variance: 0, 
+    status: 'On-Hold',
+    invoiceStatus: 'Pending',
+    projectManager: 'Carla Hayes' 
+  },
+  { 
+    vendor: 'Quantum Dynamics', 
+    contractId: 'PO-99876', 
+    startDate: '05/20/2023', 
+    endDate: '05/19/2024', 
+    ceilingValue: 1000000, 
+    costType: 'T&M', 
+    variance: -50000,
+    status: 'Expired',
+    invoiceStatus: 'Paid',
+    projectManager: 'Ben Vance' 
+  },
+  { 
+    vendor: 'Apex Solutions', 
+    contractId: 'PO-55432', 
+    startDate: '06/01/2024', 
+    endDate: '05/31/2025', 
+    ceilingValue: 300000, 
+    costType: 'Retainer',
+    variance: 0,
+    status: 'Active',
+    invoiceStatus: 'Overdue',
+    projectManager: 'Alice Grant' 
+  },
+  { 
+    vendor: 'Digital Frontier', 
+    contractId: 'PO-11223', 
+    startDate: '01/01/2023', 
+    endDate: '12/31/2023', 
+    ceilingValue: 450000, 
+    costType: 'Fixed Bid', 
+    variance: 2500,
+    status: 'Completed',
+    invoiceStatus: 'Paid',
+    projectManager: 'Diana Cain' 
+  }
 ];
 
 export const changeRiskTrackingData = [
-  { type: 'Change Request', status: 'Approved', count: 5, impact: 'Low' },
-  { type: 'Change Request', status: 'Pending', count: 2, impact: 'Medium' },
-  { type: 'Risk', status: 'Open', count: 8, impact: 'High' },
-  { type: 'Risk', status: 'Mitigated', count: 12, impact: 'N/A' }
+  {
+    id: 'CR-001',
+    type: 'Issue',
+    title: 'Budget cuts Identified',
+    category: 'Financial Forecasting',
+    severity: 'High',
+    status: 'Open',
+    date: '2025-06-15',
+  },
+  {
+    id: 'CR-002',
+    type: 'Risk',
+    title: 'Vendor Delay',
+    category: 'Program and Portfolio Status Reporting',
+    severity: 'Medium',
+    status: 'In Progress',
+    date: '2025-06-18',
+  },
+  {
+    id: 'CR-003',
+    type: 'Risk',
+    title: 'Resource Constraint',
+    category: 'Risk Heatmap',
+    severity: 'High',
+    status: 'Open',
+    date: '2025-06-20',
+  },
+  {
+    id: 'CR-004',
+    type: 'Issue',
+    title: 'Overtime Required',
+    category: 'Benefit Realization Tracker',
+    severity: 'Low',
+    status: 'Mitigated',
+    date: '2025-06-22',
+  },
+  {
+    id: 'CR-005',
+    type: 'Change Request',
+    title: 'Scope Expansion for API Module',
+    category: 'Project Alpha',
+    severity: 'Medium',
+    status: 'Approved',
+    date: '2025-06-25',
+  },
+   {
+    id: 'CR-006',
+    type: 'Risk',
+    title: 'Data Migration Failure',
+    category: 'Project Phoenix',
+    severity: 'High',
+    status: 'Open',
+    date: '2025-06-28',
+  },
 ];
 
-export const tasksData = [
-  { name: 'Requirement Gathering', progress: 100 },
-  { name: 'Design & Prototyping', progress: 80 },
-  { name: 'Development & Testing', progress: 60 },
-  { name: 'Deployment', progress: 25 }
+export const aiPredictionData = [
+  {
+    project: 'Project A',
+    predictedDelay: 8,
+    confidence: 'High',
+    risk: 'Resource Allocation'
+  },
+  {
+    project: 'Project B',
+    predictedDelay: 35,
+    confidence: 'Medium',
+    risk: 'Vendor Delivery'
+  },
+  {
+    project: 'Project C',
+    predictedDelay: 60,
+    confidence: 'High',
+    risk: 'Budget Limitation'
+  }
 ];

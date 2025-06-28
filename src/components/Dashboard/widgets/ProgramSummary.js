@@ -1,44 +1,76 @@
 import React from 'react';
-import {Card} from '../../ui/card';
-import { programSummaryData }  from '../../../data/mockdata';
+import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card'; // Assuming shadcn Card structure
+import { programSummaryData } from '../../../data/mockdata';
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../../ui/table";
 
 const ProgramSummary = () => (
-    <Card title="Program & Portfolio Summary">
-        <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left text-gray-500">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                    <tr>
-                        {['Program', 'PSM', 'Health', 'CAPEX', 'OPEX', 'Budget', 'Forecast', 'Variance', 'Status'].map(h =>
-                            <th key={h} scope="col" className="px-4 py-2">{h}</th>
-                        )}
-                    </tr>
-                </thead>
-                <tbody>
-                    {programSummaryData.map((row, i) => (
-                        <tr key={i} className="bg-white border-b hover:bg-gray-50">
-                            <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap">{row.program}</td>
-                            <td className="px-4 py-2">{row.psm}</td>
-                            <td className="px-4 py-2">
-                                <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                                    row.health === 'On Track' ? 'bg-green-100 text-green-800' :
-                                    row.health === 'Minor-Risk' ? 'bg-yellow-100 text-yellow-800' :
-                                    'bg-red-100 text-red-800'
-                                }`}>{row.health}</span>
-                            </td>
-                            <td className="px-4 py-2">${row.capex}M</td>
-                            <td className="px-4 py-2">${row.opex}M</td>
-                            <td className="px-4 py-2 font-bold">${row.budget}M</td>
-                            <td className="px-4 py-2">${row.forecast}M</td>
-                            <td className={`px-4 py-2 ${row.variance < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                                ${row.variance}M
-                            </td>
-                            <td className="px-4 py-2">{row.status}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-</Card>
+    <Card>
+        <CardHeader>
+            <CardTitle className="text-lg">Program & Portfolio Summary</CardTitle>
+        </CardHeader>
+        <CardContent className="p-0"> {/* Remove padding from card content to allow table to span full width */}
+            <div className="overflow-x-auto">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            {/* Header with reduced padding and smaller font */}
+                            <TableHead className="px-3 py-2 text-xs">Program (Pi)</TableHead>
+                            <TableHead className="px-3 py-2 text-xs">Portfolio</TableHead>
+                            <TableHead className="px-3 py-2 text-xs">Project</TableHead>
+                            <TableHead className="px-3 py-2 text-xs">Status</TableHead>
+                            <TableHead className="px-3 py-2 text-xs">Milestone Status</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {programSummaryData.map((group, groupIndex) => (
+                            <React.Fragment key={groupIndex}>
+                                {group.statuses?.map((statusItem, statusIndex) => (
+                                    <TableRow key={statusIndex} className="text-xs"> {/* Set base font-size for the row */}
+                                        {statusIndex === 0 ? (
+                                            <>
+                                                <TableCell className="px-3 py-1.5 font-medium">{group.program}</TableCell>
+                                                <TableCell className="px-3 py-1.5">{group.portfolio}</TableCell>
+                                                <TableCell className="px-3 py-1.5">{group.project}</TableCell>
+                                            </>
+                                        ) : (
+                                            <TableCell colSpan={3} className="px-3 py-1.5"></TableCell>
+                                        )}
+
+                                        {/* Status column */}
+                                        <TableCell className="px-3 py-1.5">
+                                            <div className="flex items-center">
+                                                <span className={`h-2 w-2 rounded-full mr-2 ${
+                                                    statusItem.status === 'On Track' ? 'bg-green-500' :
+                                                    statusItem.status === 'At Risk' ? 'bg-yellow-500' :
+                                                    statusItem.status === 'Completed' ? 'bg-blue-500' : 'bg-red-500'
+                                                }`}></span>
+                                                {statusItem.status}
+                                            </div>
+                                        </TableCell>
+
+                                        {/* Milestone Status column */}
+                                        <TableCell className="px-3 py-1.5">
+                                            <span className="underline">
+                                                {statusItem.milestoneStatus}
+                                            </span>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </React.Fragment>
+                        ))}
+                    </TableBody>
+                </Table>
+            </div>
+        </CardContent>
+    </Card>
 );
 
 export default ProgramSummary;

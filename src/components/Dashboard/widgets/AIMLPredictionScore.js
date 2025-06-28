@@ -1,31 +1,103 @@
 import React, { useState } from 'react';
-import {Card} from '../../ui/card';
+// Import useNavigate hook from react-router-dom
+import { useNavigate } from 'react-router-dom';
+import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
+import { Button } from '../../ui/Button';
+import { Slider } from '../../ui/slider';
+import { aiPredictionData } from '../../../data/mockdata';
+import { ChevronDown } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../../ui/drop-down';
 
-const PredictionSlider = ({ label, value, onValueChange }) => (
-    <div className="w-full">
-        <label className="text-sm text-gray-600">{label}</label>
-        <div className="flex items-center space-x-2">
-            <input type="range" min="0" max="100" value={value} onChange={(e) => onValueChange(parseInt(e.target.value, 10))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
-            <span className="text-sm font-medium text-gray-800 w-8 text-right">{value}%</span>
-        </div>
-    </div>
-);
 
-const AIMLPredictionScore = () => {
-    const [projectValue, setProjectValue] = useState(75);
-    const [budgetValue, setBudgetValue] = useState(60);
+// --- Reusable & Interactive Sub-component for each Project Card ---
+const ProjectPredictionCard = ({ projectInfo }) => {
+    const [delay, setDelay] = useState(projectInfo.predictedDelay);
+    const navigate = useNavigate();
+
+    const handleShowSummary = () => {
+        const projectSlug = projectInfo.project.toLowerCase().replace(/ /g, '-');
+        navigate(`/ai-insights/${projectSlug}`);
+    };
 
     return (
-        <Card title="AI/ML Prediction Score">
-            <div className="space-y-6">
-                <PredictionSlider label="Project Likelihood to Succeed" value={projectValue} onValueChange={setProjectValue}/>
-                <PredictionSlider label="Budget Likelihood to Succeed" value={budgetValue} onValueChange={setBudgetValue}/>
-                <div className="text-center pt-2">
-                    <button className="bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
-                        Show Summary
-                    </button>
+        // The hover effect is now applied to all cards
+        <div className={`p-4 border rounded-xl shadow-sm bg-white hover:bg-blue-100/50 transition-colors duration-200`}>
+            <h4 className="font-bold text-gray-800 mb-4">{projectInfo.project}</h4>
+            
+            <div className="space-y-3 text-sm">
+                <div className="flex items-center gap-2">
+                    <label className="text-gray-600 w-32 shrink-0">Predicted Delay%</label>
+                    <Slider
+                        value={[delay]}
+                        onValueChange={(value) => setDelay(value[0])}
+                        max={100}
+                        step={1}
+                    />
+                    <span className="font-semibold text-gray-800 w-8 text-right">{delay}%</span>
+                </div>
+                <div className="flex justify-between items-center">
+                    <label className="text-gray-600">Confidence:</label>
+                    <span className="font-semibold text-gray-800">{projectInfo.confidence}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                    <label className="text-gray-600">Risk:</label>
+                    <span className="font-semibold text-gray-800">{projectInfo.risk}</span>
                 </div>
             </div>
+            
+            <div className="text-center mt-5">
+                <Button 
+                    onClick={handleShowSummary}
+                    // Button text is now explicitly white
+                    className="bg-[#00254D] text-white hover:bg-[#00254D]/90 h-9 px-6 rounded-full"
+                >
+                    Show Summary
+                </Button>
+            </div>
+        </div>
+    );
+};
+
+
+// --- Main Enhanced Component ---
+const AIMLPredictionScore = () => {
+    const [dataSource, setDataSource] = useState('Google');
+
+    return (
+        <Card>
+            <CardHeader>
+                <div className="flex justify-between items-center">
+                    <CardTitle>AI Delay Prediction Score</CardTitle>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline">
+                                {dataSource}
+                                <ChevronDown className="h-4 w-4 ml-2" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuItem onSelect={() => setDataSource('Google Sheet')}>
+                                Google Sheet
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onSelect={() => setDataSource('Jira')}>
+                                Jira
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+            </CardHeader>
+            <CardContent>
+                <div className="space-y-4">
+                    {aiPredictionData.map((data, index) => (
+                        <ProjectPredictionCard key={index} projectInfo={data} />
+                    ))}
+                </div>
+            </CardContent>
         </Card>
     );
 };
