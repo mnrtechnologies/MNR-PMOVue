@@ -8,6 +8,7 @@ import PrivateRoute from "./components/common/PrivateRoute";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Home from "./pages/Dashboard/Home";
 import Navbar from "./components/Dashboard/Navbar";
+import AiInsights from "./pages/Dashboard/AiInsights";
 
 const App = () => {
   return (
@@ -33,7 +34,7 @@ const App = () => {
         >
           <Route index element={<Home />} />
           <Route path="projects" element={<Home />} />
-          <Route path="insights" element={<Home />} />
+          <Route path="insights" element={<AiInsights/>} />
           <Route path="settings">
             <Route path="profile" element={<Home />} />
             <Route path="password" element={<Home />} />
