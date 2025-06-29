@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux"
 import { Outlet } from "react-router-dom"
-
 import Sidebar from "../../components/Dashboard/Sidebar"
 
 function Dashboard() {
@@ -9,18 +8,23 @@ function Dashboard() {
 
   if (profileLoading || authLoading) {
     return (
-      <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
+      <div className="grid min-h-[calc(100vh-6rem)] place-items-center">
         <div className="spinner"></div>
       </div>
     )
   }
 
   return (
-    <div className="relative flex min-h-[calc(100vh-3.5rem)]">
+    // This parent div now has a fixed height and prevents its children from overflowing it.
+    // This is the key to removing the browser's scrollbar.
+    <div className="relative flex h-[calc(100vh-6rem)] overflow-hidden">
       <Sidebar />
-      <div className="h-[calc(100vh-3.5rem)] flex-1 overflow-auto py-10">
-       <Outlet />
 
+    
+      <div className="flex-1 ">
+      <div className="h-full w-full overflow-y-auto py-10 lg:ml-34">
+            <Outlet />
+        </div>
       </div>
     </div>
   )
