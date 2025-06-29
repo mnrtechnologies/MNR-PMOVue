@@ -12,7 +12,7 @@ const mailSender = async (email, title, body) => {
     })
 
     let info = await transporter.sendMail({
-      from: `"PortfolioVue" <${process.env.MAIL_USER}>`, // sender address
+      from: `"PPPVue" <${process.env.MAIL_USER}>`, // sender address
       to: `${email}`, 
       subject: `${title}`, 
       html: `${body}`, 
