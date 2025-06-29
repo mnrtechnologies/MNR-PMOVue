@@ -1,0 +1,37 @@
+export const jiraProjectData = {
+  'project-a': {
+    name: 'Project A',
+    currentStatus: { inProgress: 40, done: 30 },
+    monthlyFinancials: [
+      { month: 'Jan', planned: 2.2, forecast: 2.0, actual: 1.9 },
+      { month: 'Feb', planned: 2.5, forecast: 2.4, actual: 2.0 },
+      { month: 'Mar', planned: 2.0, forecast: 2.3, actual: 2.1 },
+      { month: 'Apr', planned: 2.8, forecast: 2.6, actual: 2.5 },
+      { month: 'May', planned: 3.1, forecast: 2.9, actual: 2.6 },
+      { month: 'Jun', planned: 3.3, forecast: 3.1, actual: 2.9 },
+      { month: 'Jul', planned: 2.7, forecast: 2.8, actual: 2.5 },
+      { month: 'Aug', planned: 3.0, forecast: 2.7, actual: 2.4 },
+      { month: 'Sep', planned: 2.2, forecast: 2.1, actual: 1.9 },
+      { month: 'Oct', planned: 2.4, forecast: 2.2, actual: 2.0 },
+      { month: 'Nov', planned: 2.6, forecast: 2.5, actual: 2.3 },
+      { month: 'Dec', planned: 2.3, forecast: 2.2, actual: 2.1 },
+    ],
+    hoursAnalysis: [
+      { name: 'Original Estimated Hours', value: 320 },
+      { name: 'Time Spent Hours', value: 240 },
+      { name: 'Remaining Estimated Hours', value: 80 },
+    ],
+    tasks: [
+      { id: 'PV-100', status: 'In Progress', priority: 'High', assignee: 'Cheryl28', dueDate: '2024-11-03', lastInteraction: '2024-11-03' },
+      { id: 'PV-101', status: 'Done', priority: 'Medium', assignee: 'Harry28', dueDate: '2024-10-21', lastInteraction: '2024-10-22' },
+      { id: 'PV-102', status: 'In Progress', priority: 'Low', assignee: 'Cheryl28', dueDate: '2024-11-07', lastInteraction: '2024-11-01' },
+      { id: 'PV-103', status: 'In Progress', priority: 'High', assignee: 'Cheryl28', dueDate: '2024-11-10', lastInteraction: '2024-11-04' },
+      { id: 'PV-104', status: 'Done', priority: 'High', assignee: 'Cheryl28', dueDate: '2024-10-15', lastInteraction: '2024-10-20' },
+      { id: 'PV-105', status: 'Done', priority: 'Medium', assignee: 'Cheryl28', dueDate: '2024-11-01', lastInteraction: '2024-11-03' },
+      { id: 'PV-106', status: 'In Progress', priority: 'Medium', assignee: 'Harry28', dueDate: '2024-11-15', lastInteraction: '2024-11-06' },
+      { id: 'PV-107', status: 'Done', priority: 'Low', assignee: 'Eve19', dueDate: '2024-10-30', lastInteraction: '2024-10-31' },
+      { id: 'PV-108', status: 'Done', priority: 'High', assignee: 'JohnDoe', dueDate: '2024-11-05', lastInteraction: '2024-11-05' },
+      { id: 'PV-109', status: 'In Progress', priority: 'High', assignee: 'DevVedi', dueDate: '2024-11-09', lastInteraction: '2024-11-08' },
+    ],
+  },
+};

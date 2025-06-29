@@ -12,7 +12,7 @@ import AiInsights from "./pages/Dashboard/AiInsights";
 import AiInsights2 from "./pages/Dashboard/AiInsights2";
 import ProfileManagement from "./pages/Dashboard/ProfileManagement";
 import PasswordAuthentication from "./pages/Dashboard/PasswordAuthentication";
-
+import JiraSummaryPage from "./pages/Dashboard/jiraSummaryPage";
 const App = () => {
   return (
     <Router>
@@ -43,6 +43,12 @@ const App = () => {
             <Route path="password" element={<PasswordAuthentication/>} />
           </Route>
         </Route>
+
+         <Route 
+            path="jira-summary/:projectSlug" 
+            element={<JiraSummaryPage />} 
+          />
+          
       </Routes>
     </Router>
   );

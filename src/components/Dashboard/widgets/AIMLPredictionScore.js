@@ -15,20 +15,24 @@ import {
 
 
 // --- Reusable & Interactive Sub-component for each Project Card ---
-const ProjectPredictionCard = ({ projectInfo }) => {
+const ProjectPredictionCard = ({ projectInfo, dataSource }) => {
     const [delay, setDelay] = useState(projectInfo.predictedDelay);
     const navigate = useNavigate();
 
     const handleShowSummary = () => {
         const projectSlug = projectInfo.project.toLowerCase().replace(/ /g, '-');
-        navigate(`/ai-insights/${projectSlug}`);
+
+        if (dataSource === 'Jira') {
+            navigate(`/jira-summary/${projectSlug}`);
+        } else {
+            navigate(`/ai-insights/${projectSlug}`);
+        }
     };
 
     return (
-        // The hover effect is now applied to all cards
         <div className={`p-4 border rounded-xl shadow-sm bg-white hover:bg-blue-100/50 transition-colors duration-200`}>
             <h4 className="font-bold text-gray-800 mb-4">{projectInfo.project}</h4>
-            
+
             <div className="space-y-3 text-sm">
                 <div className="flex items-center gap-2">
                     <label className="text-gray-600 w-32 shrink-0">Predicted Delay%</label>
@@ -49,11 +53,10 @@ const ProjectPredictionCard = ({ projectInfo }) => {
                     <span className="font-semibold text-gray-800">{projectInfo.risk}</span>
                 </div>
             </div>
-            
+
             <div className="text-center mt-5">
                 <Button 
                     onClick={handleShowSummary}
-                    // Button text is now explicitly white
                     className="bg-[#00254D] text-white hover:bg-[#00254D]/90 h-9 px-6 rounded-full"
                 >
                     Show Summary
@@ -64,9 +67,10 @@ const ProjectPredictionCard = ({ projectInfo }) => {
 };
 
 
+
 // --- Main Enhanced Component ---
 const AIMLPredictionScore = () => {
-    const [dataSource, setDataSource] = useState('Google');
+    const [dataSource, setDataSource] = useState('Jira');
 
     return (
         <Card>
@@ -94,7 +98,7 @@ const AIMLPredictionScore = () => {
             <CardContent>
                 <div className="space-y-4">
                     {aiPredictionData.map((data, index) => (
-                        <ProjectPredictionCard key={index} projectInfo={data} />
+<ProjectPredictionCard key={index} projectInfo={data} dataSource={dataSource} />
                     ))}
                 </div>
             </CardContent>
