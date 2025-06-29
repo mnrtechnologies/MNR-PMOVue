@@ -48,6 +48,10 @@ const App = () => {
             path="jira-summary/:projectSlug" 
             element={<JiraSummaryPage />} 
           />
+                   <Route 
+            path="ai-insights/:projectSlug" 
+            element={<JiraSummaryPage />} 
+          />
           
       </Routes>
     </Router>

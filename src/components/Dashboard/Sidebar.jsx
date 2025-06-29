@@ -35,12 +35,7 @@ const Sidebar = () => {
       to: "/dashboard/insights",
       label: "AI Insights",
       icon: <FaBrain className="w-5 h-5" />,
-    },
-    {
-      to: "/dashboard/projects",
-      label: "Project",
-      icon: <FaBrain className="w-5 h-5" />,
-    },
+    }
   ];
 
   const settingsLinks = [
