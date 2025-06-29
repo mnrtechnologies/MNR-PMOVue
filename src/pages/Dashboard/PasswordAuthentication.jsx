@@ -22,8 +22,8 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="bg-white p-10 min-h-screen">
-      <form onSubmit={handleSubmit} className="max-w-5xl mx-auto">
+    <div className="bg-white p-6 min-h-screen">
+      <form onSubmit={handleSubmit} className="max-w-7xl mx-auto">
         <div className="bg-[#f4f8f7] rounded-xl shadow-md p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
           {/* Left Panel */}
           <div className="flex flex-col items-center md:items-start md:w-1/3">
