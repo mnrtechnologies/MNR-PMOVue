@@ -12,7 +12,7 @@ export function chatbot(query) {
     try {
       const response = await apiConnector("POST", CHATBOT_API, { query });
 
-      console.log("CHATBOT RESPONSE:", response);
+      //console.log("CHATBOT RESPONSE:", response);
 
       if (!response.data.success) {
         throw new Error(response.data.message);

@@ -29,7 +29,7 @@ export function getUserDetails() {
         }
       );
 
-      console.log("GET_USER_DETAILS RESPONSE:", response);
+      //console.log("GET_USER_DETAILS RESPONSE:", response);
 
       if (!response.data.success) {
         throw new Error(response.data.message);
