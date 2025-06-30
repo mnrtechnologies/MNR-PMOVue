@@ -92,22 +92,20 @@ const notifications = [
   },
 ];
 
-
-
 export default function Notifications() {
-      const { user } = useSelector((state) => state.profile);
+  const { user } = useSelector((state) => state.profile);
 
   return (
-    <main className="max-w-6xl mx-auto bg-white font-sans text-base text-gray-700">
-      <h1 className="text-3xl font-semibold text-[#0c2e55] mb-6">
+    <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 bg-white font-sans text-gray-800">
+      <h1 className="text-2xl sm:text-3xl font-semibold text-[#0c2e55] mb-6">
         Welcome Back, {user?.firstName}
       </h1>
 
       <section className="mb-4">
-        <div className="flex items-center space-x-2 mb-2 font-semibold text-gray-700">
-          <span className="text-lg">Notifications</span>
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-lg font-semibold text-gray-700">Notifications</span>
           <button
-            className="flex items-center space-x-1 bg-gray-100 text-gray-600 text-sm rounded-md px-3 py-1 cursor-pointer select-none"
+            className="flex items-center space-x-1 bg-gray-100 text-gray-600 text-sm rounded-md px-3 py-1 hover:bg-gray-200 transition"
             type="button"
           >
             <span>All</span>
@@ -129,12 +127,13 @@ export default function Notifications() {
           </button>
         </div>
       </section>
+
       <section className="divide-y divide-gray-300">
         {notifications.map((notif) => (
           <article key={notif.id} className="py-4">
-            <div className="flex items-center space-x-2 mb-1">
+            <div className="flex items-start sm:items-center flex-col sm:flex-row gap-2 mb-1">
               <span
-                className={`w-3 h-3 rounded-full ${notif.badgeColor} inline-block flex-shrink-0`}
+                className={`w-3 h-3 rounded-full ${notif.badgeColor} flex-shrink-0 mt-1`}
                 aria-hidden="true"
               ></span>
               <h2 className="text-blue-900 text-base font-medium">
@@ -144,23 +143,22 @@ export default function Notifications() {
                 </a>
               </h2>
             </div>
-            <div className="flex items-center space-x-2 mb-2 text-[15px]">
+
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 mb-2 text-[15px]">
               {notif.icon ? (
-                <FontAwesomeIcon
-                  icon={notif.icon}
-                  className={`${notif.iconColor} flex-shrink-0`}
-                />
+                <FontAwesomeIcon icon={notif.icon} className={`${notif.iconColor}`} />
               ) : (
                 notif.iconSVG
               )}
               <p className="text-gray-900 font-semibold">
-                Task
+                Task{" "}
                 <span className="inline-block bg-gray-100 border border-gray-300 rounded px-2 py-[2px] mx-1 font-mono text-sm font-semibold">
                   {notif.task}
                 </span>
                 {notif.message.replace(`Task ${notif.task}`, "")}
               </p>
             </div>
+
             {notif.details.map((detail, i) => (
               <p
                 key={i}
@@ -174,9 +172,10 @@ export default function Notifications() {
                 {detail.split(":").slice(1).join(":").trim()}
               </p>
             ))}
+
             <div className="flex items-center justify-end space-x-2 text-gray-400 text-sm">
               <FontAwesomeIcon icon={farClock} />
-              <span>9 hour ago</span>
+              <span>9 hours ago</span>
             </div>
           </article>
         ))}
