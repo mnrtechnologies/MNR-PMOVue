@@ -8,6 +8,38 @@ const { passwordUpdated } = require("../mail/templates/passwordUpdate");
 //const Profile = require("../models/Profile");
 require("dotenv").config();
 
+// Get user details using token
+exports.getUserDetails = async (req, res) => {
+  try {
+    // req.user is populated by the auth middleware
+    const userId = req.user.id;
+
+    // Fetch the user data from the database, excluding the password
+    const user = await User.findById(userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User details fetched successfully",
+      user,
+    });
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong while fetching user details",
+      error: error.message,
+    });
+  }
+};
+
+
 // Register Controller for Registering USers
 exports.register = async (req, res) => {
   try {

@@ -1,8 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useLocation, Link } from 'react-router-dom';
-import { setToken } from '../../slices/authSlice';
-import { setUser } from '../../slices/profileSlice';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { Search, Bell, ChevronDown, LogOut, Settings, UserCircle } from 'lucide-react';
 import logo from "../../assets/logo.png";
 
@@ -15,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '../../components/ui/drop-down';
 import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/Avatar";
+import { logout } from '../../services/oprations/authAPI';
 
 const Navbar = () => {
     const { pathname } = useLocation();
@@ -40,10 +39,11 @@ const Navbar = () => {
             .sort((a, b) => b.to.length - a.to.length)[0];
         return found ? found.label : "Dashboard";
     }, [pathname, mainLinks, settingsLinks]);
+
+    const navigate = useNavigate();
     
     const handleLogout = () => {
-        dispatch(setToken(null));
-        dispatch(setUser(null));
+        dispatch(logout(navigate))
     };
 
     const getInitials = (name) => {

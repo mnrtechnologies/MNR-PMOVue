@@ -1,10 +1,14 @@
 // Import the required modules
 const express = require("express")
-const { signin, sendotp, register } = require("../controllers/AuthController")
+const { signin, sendotp, register, getUserDetails } = require("../controllers/AuthController")
 const { resetPasswordToken, resetPassword } = require("../controllers/resetPasswordController")
 const router = express.Router()
+const {auth} = require("../middleware/auth")
 
 // Routes for Login, Signup, and Authentication
+
+//get user details
+router.get("/get-user-details",auth,getUserDetails);
 
 // Route for user login
 router.post("/signin", signin)
