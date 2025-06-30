@@ -9,3 +9,7 @@ export const endpoints = {
   RESETPASSTOKEN_API: BASE_URL + "/auth/reset-password-token",
   RESETPASSWORD_API: BASE_URL + "/auth/reset-password",
 }
+
+export const chatbotendpoints = {
+  CHATBOT_API: BASE_URL + "/chatbot",
+}

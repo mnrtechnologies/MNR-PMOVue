@@ -7,6 +7,7 @@ const {auth} = require("../middleware/auth")
 
 // Routes for Login, Signup, and Authentication
 
+
 //get user details
 router.get("/get-user-details",auth,getUserDetails);
 

@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux"
 import { Outlet } from "react-router-dom"
 import Sidebar from "../../components/Dashboard/Sidebar"
+import ChatbotWidget from "../../components/common/ChatbotWidget"
 
 function Dashboard() {
   const { loading: profileLoading } = useSelector((state) => state.profile)
@@ -26,6 +27,7 @@ function Dashboard() {
             <Outlet />
         </div>
       </div>
+      <ChatbotWidget/>
     </div>
   )
 }
