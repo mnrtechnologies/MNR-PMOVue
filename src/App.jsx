@@ -16,6 +16,7 @@ import PasswordAuthentication from "./pages/Dashboard/PasswordAuthentication";
 import JiraSummaryPage from "./pages/Dashboard/jiraSummaryPage";
 import { useDispatch } from "react-redux";
 import { getUserDetails } from "./services/oprations/authAPI";
+import Notifications from "./pages/Dashboard/Notification";
 
 const RedirectIfLoggedIn = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -59,7 +60,7 @@ const App = () => {
           }
         >
           <Route index element={<Home />} />
-          <Route path="projects" element={<AiInsights2 />} />
+          <Route path="notification" element={<Notifications/>} />
           <Route path="insights" element={<AiInsights />} />
           <Route path="settings">
             <Route path="profile" element={<ProfileManagement />} />

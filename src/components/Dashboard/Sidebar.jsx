@@ -1,6 +1,6 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { FaHome, FaBrain, FaCog, FaKey, FaUserCog } from "react-icons/fa";
+import { FaHome, FaBrain,FaBell , FaCog, FaKey, FaUserCog } from "react-icons/fa";
 import { ChevronDown, ChevronUp, Menu, X } from "lucide-react";
 
 const Sidebar = () => {
@@ -31,11 +31,16 @@ const Sidebar = () => {
       icon: <FaHome className="w-5 h-5" />,
       exact: true,
     },
+
     {
       to: "/dashboard/insights",
       label: "AI Insights",
       icon: <FaBrain className="w-5 h-5" />,
-    }
+    } ,       {
+      to: "/dashboard/notification",
+      label: "Notification",
+      icon: <FaBell  className="w-5 h-5" />,
+    },
   ];
 
   const settingsLinks = [
