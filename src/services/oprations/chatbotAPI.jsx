@@ -1,7 +1,6 @@
 import { toast } from "react-hot-toast";
 
 import { setLoading } from "../../slices/authSlice";
-import { setUser } from "../../slices/profileSlice";
 import { apiConnector } from "../apiConnector";
 import { chatbotendpoints } from "../apis";
 
@@ -18,9 +17,6 @@ export function chatbot(query) {
       if (!response.data.success) {
         throw new Error(response.data.message);
       }
-
-      const userData = response.data.user;
-      dispatch(setUser(userData));
 
       return response.data.response; 
     } catch (error) {
