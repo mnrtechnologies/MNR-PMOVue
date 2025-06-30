@@ -81,8 +81,8 @@ export default function ChatbotWidget() {
   return (
     <div className="fixed bottom-6 right-6 z-50 w-80 font-sans">
       {isOpen && (
-        <div className="absolute bottom-14 right-2 bg-[#00254D] border border-gray-300 rounded-2xl shadow-2xl w-80 h-96 flex flex-col overflow-hidden animate-fadeIn transition-all duration-300">
-          <div className="bg-gradient-to-r from-blue-600 to-pink-500 text-white px-4 py-2 font-bold text-sm tracking-wide shadow-inner">
+        <div className="absolute bottom-14 right-2 bg-[#00254D] border border-[#1B3958] rounded-2xl shadow-2xl w-80 h-96 flex flex-col overflow-hidden animate-fadeIn transition-all duration-300">
+          <div className="bg-[#1B3958] text-white px-4 py-2 font-bold text-sm tracking-wide shadow-inner">
             🤖 AI Assistant
           </div>
 
@@ -93,10 +93,10 @@ export default function ChatbotWidget() {
                 className={classNames(
                   "p-2 rounded-xl max-w-[90%] transition-all duration-300",
                   {
-                    "bg-blue-100 self-end text-blue-900 text-right":
+                    "bg-[#1E3A5F] self-end text-white text-right":
                       msg.role === "user",
-                    "bg-white bg-opacity-10 self-start text-white text-left":
-                      msg.role === "bot", // changed for better contrast
+                    "bg-[#1A2F45] self-start text-white text-left":
+                      msg.role === "bot",
                   }
                 )}
               >
@@ -104,24 +104,24 @@ export default function ChatbotWidget() {
               </div>
             ))}
             {loading && (
-              <div className="text-gray-300 text-left animate-pulse">
-                Ai is thinking...
+              <div className="text-blue-200 text-left animate-pulse">
+                AI is thinking...
               </div>
             )}
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="p-2 border-t border-gray-700 flex items-center gap-2 bg-[#00254D]">
+          <div className="p-2 border-t border-[#1B3958] flex items-center gap-2 bg-[#00254D]">
             <input
               type="text"
               placeholder="Type your message..."
-              className="flex-1 px-3 py-2 rounded-md text-sm text-white bg-[#001A33] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400"
+              className="flex-1 px-3 py-2 rounded-md text-sm text-white bg-[#0F2C4C] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6B85B2]"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
             />
             <button
-              className="bg-gradient-to-r from-blue-500 to-pink-500 text-white px-4 py-2 rounded-md text-sm shadow-md hover:scale-105 active:scale-95 transition-all disabled:opacity-50"
+              className="bg-gradient-to-r from-[#1B4D6F] to-[#6B85B2] text-white px-4 py-2 rounded-md text-sm shadow-md hover:scale-105 active:scale-95 transition-all disabled:opacity-50"
               onClick={sendMessage}
               disabled={loading}
             >
@@ -132,7 +132,7 @@ export default function ChatbotWidget() {
       )}
 
       <button
-        className="absolute bottom-0 right-0 bg-gradient-to-r from-blue-500 to-pink-500 hover:from-pink-500 hover:to-blue-500 text-white p-3 rounded-full shadow-xl transition-all duration-300"
+        className="absolute bottom-0 right-0 bg-gradient-to-r from-[#1B4D6F] to-[#6B85B2] hover:from-[#6B85B2] hover:to-[#1B4D6F] text-white p-3 rounded-full shadow-xl transition-all duration-300"
         onClick={() => setIsOpen(!isOpen)}
       >
         <MessageSquare className="w-5 h-5" />
