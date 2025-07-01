@@ -1,9 +1,19 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { FaHome, FaBrain,FaBell, FaUserEdit   , FaCog, FaKey, FaUserCog } from "react-icons/fa";
+import {
+  FaHome,
+  FaBrain,
+  FaBell,
+  FaUserEdit,
+  FaCog,
+  FaKey,
+  FaUserCog,
+} from "react-icons/fa";
 import { ChevronDown, ChevronUp, Menu, X } from "lucide-react";
+import { useSelector } from "react-redux";
 
 const Sidebar = () => {
+  const { user } = useSelector((state) => state.profile);
   const { pathname } = useLocation();
   const isOnSettingsRoute = pathname.startsWith("/dashboard/settings");
 
@@ -36,10 +46,11 @@ const Sidebar = () => {
       to: "/dashboard/insights",
       label: "AI Insights",
       icon: <FaBrain className="w-5 h-5" />,
-    } ,       {
+    },
+    {
       to: "/dashboard/notification",
       label: "Notification",
-      icon: <FaBell  className="w-5 h-5" />,
+      icon: <FaBell className="w-5 h-5" />,
     },
   ];
 
@@ -47,19 +58,23 @@ const Sidebar = () => {
     {
       to: "/dashboard/settings/profile",
       label: "Profile Management",
-      icon: <FaUserEdit  className="w-5 h-5" />,
+      icon: <FaUserEdit className="w-5 h-5" />,
     },
     {
       to: "/dashboard/settings/password",
       label: "Password & Authentication",
       icon: <FaKey className="w-5 h-5" />,
     },
-        {
-      to: "/dashboard/settings/user-management",
-      label: "User Management",
-      icon: <FaUserCog  className="w-5 h-5" />,
-    },
-    
+
+    ...(user?.role === "Admin"
+      ? [
+          {
+            to: "/dashboard/settings/user-management",
+            label: "User Management",
+            icon: <FaUserCog className="w-5 h-5" />,
+          },
+        ]
+      : []),
   ];
 
   return (

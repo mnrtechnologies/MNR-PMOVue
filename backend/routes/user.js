@@ -3,7 +3,7 @@ const express = require("express")
 const { signin, sendotp, register, getUserDetails } = require("../controllers/AuthController")
 const { resetPasswordToken, resetPassword } = require("../controllers/resetPasswordController")
 const router = express.Router()
-const {auth} = require("../middleware/auth")
+const {auth, isAdmin} = require("../middleware/auth")
 
 // Routes for Login, Signup, and Authentication
 
@@ -15,7 +15,7 @@ router.get("/get-user-details",auth,getUserDetails);
 router.post("/signin", signin)
 
 // Route for user signup
-router.post("/register", register)
+router.post("/register",auth,isAdmin, register)
 
 // Route for sending OTP to the user's email
 router.post("/sendotp", sendotp)

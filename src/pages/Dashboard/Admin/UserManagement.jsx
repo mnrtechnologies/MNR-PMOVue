@@ -87,7 +87,7 @@ export default function UserManagement() {
   const navigate = useNavigate();
 
   return (
-    <div className="p-6">
+    <div className="px-6 pt-4 pb-6 ">
       <h2 className="text-lg font-bold text-blue-900">User Management</h2>
       <p className="text-md text-slate-500 mb-6">
         Manage your team members and their account permissions here.
