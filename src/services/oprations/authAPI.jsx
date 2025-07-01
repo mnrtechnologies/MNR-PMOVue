@@ -17,7 +17,7 @@ const {
 export function signUp(role, name, email, password, confirmPassword, navigate) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...");
-    dispatch(setLoading(true));
+    // dispatch(setLoading(true));
     try {
       if (password !== confirmPassword) {
         throw new Error("Passwords do not match");
@@ -50,7 +50,7 @@ export function signUp(role, name, email, password, confirmPassword, navigate) {
       console.log("SIGNUP API ERROR............", error);
       toast.error(error?.response?.data?.message || error?.message || "Signup Failed");
     }
-    dispatch(setLoading(false));
+    //spatch(setLoading(false));
     toast.dismiss(toastId);
   };
 }
