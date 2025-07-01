@@ -98,7 +98,7 @@ export default function Notifications() {
   return (
     <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 bg-white font-sans text-gray-800">
       <h1 className="text-2xl sm:text-3xl font-semibold text-[#0c2e55] mb-6">
-        Welcome Back, {user?.firstName}
+        Welcome Back, {user?.name}
       </h1>
 
       <section className="mb-4">

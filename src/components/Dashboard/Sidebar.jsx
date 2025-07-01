@@ -1,6 +1,6 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { FaHome, FaBrain,FaBell , FaCog, FaKey, FaUserCog } from "react-icons/fa";
+import { FaHome, FaBrain,FaBell, FaUserEdit   , FaCog, FaKey, FaUserCog } from "react-icons/fa";
 import { ChevronDown, ChevronUp, Menu, X } from "lucide-react";
 
 const Sidebar = () => {
@@ -47,13 +47,19 @@ const Sidebar = () => {
     {
       to: "/dashboard/settings/profile",
       label: "Profile Management",
-      icon: <FaUserCog className="w-5 h-5" />,
+      icon: <FaUserEdit  className="w-5 h-5" />,
     },
     {
       to: "/dashboard/settings/password",
       label: "Password & Authentication",
       icon: <FaKey className="w-5 h-5" />,
     },
+        {
+      to: "/dashboard/settings/user-management",
+      label: "User Management",
+      icon: <FaUserCog  className="w-5 h-5" />,
+    },
+    
   ];
 
   return (

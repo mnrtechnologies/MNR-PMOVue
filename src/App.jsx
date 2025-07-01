@@ -17,6 +17,8 @@ import JiraSummaryPage from "./pages/Dashboard/jiraSummaryPage";
 import { useDispatch } from "react-redux";
 import { getUserDetails } from "./services/oprations/authAPI";
 import Notifications from "./pages/Dashboard/Notification";
+import UserManagement from "./pages/Dashboard/Admin/UserManagement";
+import AddUserForm from "./pages/Dashboard/Admin/AddUserForm";
 
 const RedirectIfLoggedIn = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -65,6 +67,8 @@ const App = () => {
           <Route path="settings">
             <Route path="profile" element={<ProfileManagement />} />
             <Route path="password" element={<PasswordAuthentication />} />
+            <Route path="user-management" element={<UserManagement/>} />
+            <Route path="user-management/add-user" element={<AddUserForm/>} />
           </Route>
         </Route>
 

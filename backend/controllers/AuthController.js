@@ -45,15 +45,14 @@ exports.register = async (req, res) => {
   try {
     // Destructure fields from the request body
     const {
-      firstName,
-      lastName,
+      name,
       email,
       password,
       confirmPassword,
-      accountType,
+      role,
     } = req.body;
     // Check if All Details are there or not
-    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword) {
       return res.status(403).send({
         success: false,
         message: "All Fields are required",
@@ -92,11 +91,10 @@ exports.register = async (req, res) => {
     //   contactNumber: null,
     // })
     const user = await User.create({
-      firstName,
-      lastName,
+      name,
       email,
       password: hashedPassword,
-      accountType: accountType,
+      role: role,
     });
 
     return res.status(200).json({

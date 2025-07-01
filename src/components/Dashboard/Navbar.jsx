@@ -146,13 +146,13 @@ const Navbar = () => {
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center space-x-2 cursor-pointer p-1 rounded-full hover:bg-gray-100 transition-colors">
                   <Avatar className="h-9 w-9">
-                    <AvatarImage src={user?.avatarUrl} alt={user?.firstName} />
+                    <AvatarImage src={user?.avatarUrl} alt={user?.name} />
                     <AvatarFallback className="bg-[#012950] text-white">
-                      {getInitials(user?.firstName)}
+                      {getInitials(user?.name)}
                     </AvatarFallback>
                   </Avatar>
                   <span className="hidden sm:inline font-semibold text-sm text-[#012950]">
-                    {user?.firstName || "User"}
+                    {user?.name || "User"}
                   </span>
                   <ChevronDown className="text-[#012950] w-4 h-4" />
                 </button>
@@ -160,7 +160,7 @@ const Navbar = () => {
               <DropdownMenuContent className="w-64" align="end">
                 <DropdownMenuLabel>
                   <p className="text-sm font-bold text-gray-900 truncate">
-                    {user?.firstName}
+                    {user?.name}
                   </p>
                   <p className="text-xs text-gray-500 truncate">
                     {user?.email}

@@ -5,12 +5,7 @@ const mongoose = require("mongoose")
 const userSchema = new mongoose.Schema(
   {
     // Define the name field with type String, required, and trimmed
-    firstName: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    lastName: {
+    name: {
       type: String,
       required: true,
       trim: true,
@@ -28,7 +23,7 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     // Define the role field with type String and enum values of "Admin", "Student", or "Visitor"
-    accountType: {
+    role: {
       type: String,
       enum: ["Admin", "User"],
       required: true,
