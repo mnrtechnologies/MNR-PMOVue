@@ -48,7 +48,7 @@ const notifications = [
 export default function NotificationPopup({ onClose }) {
   const navigate = useNavigate();
   return (
-    <div className="w-[420px] rounded-xl border border-gray-300 bg-white shadow-lg p-4 font-sans text-[14px]">
+    <div className="fixed top-4 right-4 sm:static w-[90vw] sm:w-[420px] max-w-[95vw] sm:max-w-none h-[80vh] sm:h-auto overflow-y-auto rounded-xl border border-gray-300 bg-white shadow-lg p-4 font-sans text-sm z-50">
       <div className="flex justify-between items-center mb-1 pb-2 border-b">
         <h2 className="text-base font-semibold text-gray-800">Notifications</h2>
         <button
@@ -115,3 +115,4 @@ export default function NotificationPopup({ onClose }) {
     </div>
   );
 }
+
