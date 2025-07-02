@@ -53,24 +53,28 @@ export default function UserManagement() {
   };
 
   return (
-    <div className="px-6 pt-4 pb-6">
-      <h2 className="text-lg font-bold text-blue-900">User Management</h2>
-      <p className="text-md text-slate-500 mb-6">
+    <div className="px-4 sm:px-6 pt-4 pb-6">
+      <h2 className="text-lg sm:text-xl font-bold text-blue-900">
+        User Management
+      </h2>
+      <p className="text-sm sm:text-md text-slate-500 mb-6">
         Manage your team members and their account permissions here.
       </p>
 
-      <div className="flex items-center justify-between mb-3">
-        <div className="font-semibold">
+      {/* Search and Add Button */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-3 sm:gap-0">
+        <div className="font-semibold text-sm sm:text-base">
           All Users <span className="text-slate-500">{users.length}</span>
         </div>
-        <div className="flex gap-3">
-          <div className="relative w-75">
+
+        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+          <div className="relative w-full sm:w-72">
             <input
               type="text"
-              placeholder="Search Here……"
+              placeholder="Search Here…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-4 py-2 pr-10 text-sm shadow-md"
+              className="w-full border border-gray-300 rounded-md px-4 py-2 pr-10 text-sm shadow-sm"
             />
             <Search className="absolute right-3 top-2.5 h-4 w-4 text-gray-400" />
           </div>
@@ -79,15 +83,74 @@ export default function UserManagement() {
             onClick={() =>
               navigate("/dashboard/settings/user-management/add-user")
             }
-            className="bg-[#00254D] text-white px-4 py-2 rounded-md text-sm flex items-center gap-2"
+            className="bg-[#00254D] text-white px-4 py-2 rounded-md text-sm flex flex-row sm:flex-row items-center justify-center gap-3 sm:gap-2"
           >
             <UserPlus className="w-4 h-4" />
-            Add User
+            <span>Add User</span>
           </button>
         </div>
       </div>
 
-      <div className="border rounded-md overflow-x-auto">
+      {/* --- ✅ Mobile Card View --- */}
+      <div className="block md:hidden space-y-4 mt-4">
+        {users
+          .filter((u) => {
+            const query = search.toLowerCase();
+            return (
+              u.name.toLowerCase().includes(query) ||
+              u.role?.toLowerCase().includes(query) ||
+              u.email.toLowerCase().includes(query)
+            );
+          })
+          .map((user) => (
+            <div
+              key={user._id}
+              className="border rounded-lg p-4 shadow-sm space-y-2"
+            >
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center font-semibold text-sm">
+                    {user.name[0].toUpperCase()}
+                  </div>
+                  <div>
+                    <p className="text-base font-semibold">{user.name}</p>
+                    <p className="text-sm text-gray-500">{user.email}</p>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Pencil
+                    className="w-4 h-4 text-gray-500 hover:text-blue-600 cursor-pointer"
+                    onClick={() => handleEditUser(user)}
+                  />
+                  <Trash2
+                    className="w-4 h-4 text-red-500 hover:text-red-700 cursor-pointer"
+                    onClick={() => handleDeleteUser(user._id)}
+                  />
+                </div>
+              </div>
+              <div className="text-sm">
+                <span
+                  className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
+                    accessStyles[user.role] || "bg-gray-100 text-gray-700"
+                  }`}
+                >
+                  {user.role}
+                </span>
+              </div>
+              <div className="text-xs text-gray-500">
+                <p>
+                  Last Active: {new Date(user.lastActive).toLocaleDateString()}
+                </p>
+                <p>
+                  Date Added: {new Date(user.createdAt).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+          ))}
+      </div>
+
+      {/* --- ✅ Desktop Table View --- */}
+      <div className="hidden md:block border rounded-md overflow-x-auto">
         <table className="min-w-full text-sm">
           <thead className="bg-gray-100 text-left text-gray-600">
             <tr>
@@ -105,10 +168,11 @@ export default function UserManagement() {
             {users
               .filter((u) => {
                 const query = search.toLowerCase();
-                const nameMatch = u.name.toLowerCase().includes(query);
-                const roleMatch = u.role?.toLowerCase().includes(query);
-                const emailMatch = u.email.toLowerCase().includes(query);
-                return nameMatch || roleMatch || emailMatch;
+                return (
+                  u.name.toLowerCase().includes(query) ||
+                  u.role?.toLowerCase().includes(query) ||
+                  u.email.toLowerCase().includes(query)
+                );
               })
               .map((user) => (
                 <tr key={user._id} className="border-t text-md">
@@ -155,7 +219,8 @@ export default function UserManagement() {
         </table>
       </div>
 
-      <div className="flex justify-end mt-4 space-x-2">
+      {/* Pagination */}
+      <div className="flex justify-center sm:justify-end mt-4 space-x-2">
         <button className="w-8 h-8 rounded-full border bg-white text-sm text-gray-700 hover:bg-gray-100 flex items-center justify-center">
           <ChevronLeft className="w-4 h-4" />
         </button>
