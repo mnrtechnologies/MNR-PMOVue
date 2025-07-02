@@ -92,7 +92,7 @@ export default function UserManagement() {
       </div>
 
       {/* --- ✅ Mobile Card View --- */}
-      <div className="block md:hidden px-4 space-y-4 mt-4">
+      <div className="block md:hidden space-y-4 mt-4">
         {users
           .filter((u) => {
             const query = search.toLowerCase();
