@@ -1,6 +1,6 @@
 // Import the required modules
 const express = require("express")
-const { signin, sendotp, register, getUserDetails } = require("../controllers/AuthController")
+const { signin, sendotp, register, getUserDetails, getAllUsers, deleteUser, editUser } = require("../controllers/AuthController")
 const { resetPasswordToken, resetPassword } = require("../controllers/resetPasswordController")
 const router = express.Router()
 const {auth, isAdmin} = require("../middleware/auth")
@@ -10,6 +10,15 @@ const {auth, isAdmin} = require("../middleware/auth")
 
 //get user details
 router.get("/get-user-details",auth,getUserDetails);
+
+//get all user details
+router.get("/get-all-user-details",auth,isAdmin,getAllUsers)
+
+// Edit User Details
+router.put("/edit-user/:userId", auth, isAdmin, editUser);
+
+// Delete User
+router.delete("/delete-user/:userId", auth, isAdmin, deleteUser);
 
 // Route for user login
 router.post("/signin", signin)

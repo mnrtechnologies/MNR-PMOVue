@@ -1,80 +1,19 @@
-import React, { useState } from "react";
-import { UserPlus } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
 import {
+  getAllUsers,
+  editUser,
+  deleteUser,
+} from "../../../services/oprations/authAPI";
+import {
+  UserPlus,
   Search,
   Pencil,
   Trash2,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-
-const users = [
-  {
-    id: 1,
-    name: "Florence Shaw",
-    email: "florenceshaw@gmail.com",
-    initials: "F",
-    access: ["Admin", "Data Export", "Data Import"],
-    lastActive: "May 4, 2024",
-    dateAdded: "May 4, 2024",
-  },
-  {
-    id: 2,
-    name: "Ammele lawrence",
-    email: "florenceshaw@gmail.com",
-    initials: "A",
-    access: ["Admin", "Data Export", "Data Import"],
-    lastActive: "May 4, 2024",
-    dateAdded: "May 4, 2024",
-  },
-  {
-    id: 3,
-    name: "Florence Shaw",
-    email: "florenceshaw@gmail.com",
-    initials: "J",
-    access: ["Admin", "Data Export", "Data Import"],
-    lastActive: "May 4, 2024",
-    dateAdded: "May 4, 2024",
-  },
-  {
-    id: 4,
-    name: "Florence Shaw",
-    email: "florenceshaw@gmail.com",
-    initials: "P",
-    access: ["Admin", "Data Export", "Data Import"],
-    lastActive: "May 4, 2024",
-    dateAdded: "May 4, 2024",
-  },
-  {
-    id: 5,
-    name: "Florence Shaw",
-    email: "florenceshaw@gmail.com",
-    initials: "U",
-    access: ["Data Export"],
-    lastActive: "May 4, 2024",
-    dateAdded: "May 4, 2024",
-  },
-  {
-    id: 6,
-    name: "Florence Shaw",
-    email: "florenceshaw@gmail.com",
-    initials: "J",
-    access: ["Data Import"],
-    lastActive: "May 4, 2024",
-    dateAdded: "May 4, 2024",
-  },
-  {
-    id: 7,
-    name: "Florence Shaw",
-    email: "florenceshaw@gmail.com",
-    initials: "J",
-    access: ["Admin", "Data Export"],
-    lastActive: "May 4, 2024",
-    dateAdded: "May 4, 2024",
-  },
-];
 
 const accessStyles = {
   Admin: "bg-green-100 text-green-600",
@@ -83,20 +22,46 @@ const accessStyles = {
 };
 
 export default function UserManagement() {
+  const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const fetchUsers = async () => {
+    const fetchedUsers = await dispatch(getAllUsers());
+    setUsers(fetchedUsers);
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const handleEditUser = (user) => {
+    const name = prompt("Update name", user.name);
+    const email = prompt("Update email", user.email);
+    const role = prompt("Update role", user.role); // keep as string
+
+    if (name && email && role) {
+      dispatch(editUser(user._id, { name, email, role }, fetchUsers));
+    }
+  };
+
+  const handleDeleteUser = (userId) => {
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      dispatch(deleteUser(userId, fetchUsers));
+    }
+  };
+
   return (
-    <div className="px-6 pt-4 pb-6 ">
+    <div className="px-6 pt-4 pb-6">
       <h2 className="text-lg font-bold text-blue-900">User Management</h2>
       <p className="text-md text-slate-500 mb-6">
         Manage your team members and their account permissions here.
       </p>
 
-      <div className="flex items-center justify-between mb-3 ">
+      <div className="flex items-center justify-between mb-3">
         <div className="font-semibold">
-          {" "}
-          All Users <span className="text-slate-500">44</span>
+          All Users <span className="text-slate-500">{users.length}</span>
         </div>
         <div className="flex gap-3">
           <div className="relative w-75">
@@ -111,7 +76,9 @@ export default function UserManagement() {
           </div>
 
           <button
-            onClick={() => navigate("/dashboard/settings/user-management/add-user")}
+            onClick={() =>
+              navigate("/dashboard/settings/user-management/add-user")
+            }
             className="bg-[#00254D] text-white px-4 py-2 rounded-md text-sm flex items-center gap-2"
           >
             <UserPlus className="w-4 h-4" />
@@ -131,22 +98,26 @@ export default function UserManagement() {
               <th className="p-3">Access</th>
               <th className="p-3">Last Active ↓</th>
               <th className="p-3">Date Added</th>
-              <th className="p-3"> </th>
+              <th className="p-3"></th>
             </tr>
           </thead>
           <tbody>
             {users
-              .filter((u) =>
-                u.name.toLowerCase().includes(search.toLowerCase())
-              )
+              .filter((u) => {
+                const query = search.toLowerCase();
+                const nameMatch = u.name.toLowerCase().includes(query);
+                const roleMatch = u.role?.toLowerCase().includes(query);
+                const emailMatch = u.email.toLowerCase().includes(query);
+                return nameMatch || roleMatch || emailMatch;
+              })
               .map((user) => (
-                <tr key={user.id} className="border-t text-md">
+                <tr key={user._id} className="border-t text-md">
                   <td className="p-3">
                     <input type="checkbox" />
                   </td>
                   <td className="p-3 flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-medium text-sm">
-                      {user.initials}
+                      {user.name[0].toUpperCase()}
                     </div>
                     <div>
                       <p className="font-medium text-sm">{user.name}</p>
@@ -154,20 +125,29 @@ export default function UserManagement() {
                     </div>
                   </td>
                   <td className="p-3 text-sm">
-                    {user.access.map((role) => (
-                      <span
-                        key={role}
-                        className={`px-2 py-1 rounded-full text-xs font-medium ${accessStyles[role]}`}
-                      >
-                        {role}
-                      </span>
-                    ))}
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        accessStyles[user.role] || "bg-gray-100 text-gray-700"
+                      }`}
+                    >
+                      {user.role}
+                    </span>
                   </td>
-                  <td className="p-3 text-sm">{user.lastActive}</td>
-                  <td className="p-3 text-sm">{user.dateAdded}</td>
+                  <td className="p-3 text-sm">
+                    {new Date(user.lastActive).toLocaleDateString()}
+                  </td>
+                  <td className="p-3 text-sm">
+                    {new Date(user.createdAt).toLocaleDateString()}
+                  </td>
                   <td className="p-3 flex gap-2">
-                    <Pencil className="w-4 h-4 text-gray-500 hover:text-blue-600 cursor-pointer" />
-                    <Trash2 className="w-4 h-4 text-red-500 hover:text-red-700 cursor-pointer" />
+                    <Pencil
+                      className="w-4 h-4 text-gray-500 hover:text-blue-600 cursor-pointer"
+                      onClick={() => handleEditUser(user)}
+                    />
+                    <Trash2
+                      className="w-4 h-4 text-red-500 hover:text-red-700 cursor-pointer"
+                      onClick={() => handleDeleteUser(user._id)}
+                    />
                   </td>
                 </tr>
               ))}

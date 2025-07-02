@@ -12,8 +12,86 @@ const {
   RESETPASSWORD_API,
   GET_USER_DETAILS_API,
   SIGNUP_API,
+  GET_ALL_USERS_API,
+  EDIT_USER_API,
+  DELETE_USER_API,
 } = endpoints;
 
+//get all users
+export function getAllUsers() {
+  return async (dispatch) => {
+    try {
+      const token = JSON.parse(localStorage.getItem("token"));
+      const response = await apiConnector("GET", GET_ALL_USERS_API, null, {
+        Authorization: `Bearer ${token}`,
+      });
+
+      if (!response.data.success) {
+        throw new Error(response.data.message);
+      }
+
+      return response.data.users;
+    } catch (error) {
+      console.error("GET_ALL_USERS ERROR:", error);
+      return [];
+    }
+  };
+}
+
+
+//edit user
+export function editUser(userId, updatedData, onSuccess) {
+  return async (dispatch) => {
+    const toastId = toast.loading("Updating user...");
+    //dispatch(setLoading(true));
+    try {
+      const token = JSON.parse(localStorage.getItem("token"));
+      const response = await apiConnector("PUT", EDIT_USER_API(userId), updatedData, {
+        Authorization: `Bearer ${token}`,
+      });
+
+      if (!response.data.success) {
+        throw new Error(response.data.message);
+      }
+
+      toast.success("User updated successfully");
+      onSuccess && onSuccess(response.data.user); // Optional callback
+    } catch (error) {
+      console.error("EDIT_USER ERROR:", error);
+      toast.error(error?.response?.data?.message || "Failed to update user");
+    }
+    toast.dismiss(toastId);
+   // dispatch(setLoading(false));
+  };
+}
+
+//delete user
+export function deleteUser(userId, onSuccess) {
+  return async (dispatch) => {
+    const toastId = toast.loading("Deleting user...");
+    //dispatch(setLoading(true));
+    try {
+      const token = JSON.parse(localStorage.getItem("token"));
+      const response = await apiConnector("DELETE", DELETE_USER_API(userId), null, {
+        Authorization: `Bearer ${token}`,
+      });
+
+      if (!response.data.success) {
+        throw new Error(response.data.message);
+      }
+
+      toast.success("User deleted successfully");
+      onSuccess && onSuccess(); // Optional callback to refresh UI
+    } catch (error) {
+      console.error("DELETE_USER ERROR:", error);
+      toast.error(error?.response?.data?.message || "Failed to delete user");
+    }
+    toast.dismiss(toastId);
+   // dispatch(setLoading(false));
+  };
+}
+
+//register
 export function signUp(role, name, email, password, confirmPassword, navigate) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...");

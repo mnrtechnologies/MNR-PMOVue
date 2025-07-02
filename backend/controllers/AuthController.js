@@ -8,6 +8,105 @@ const { passwordUpdated } = require("../mail/templates/passwordUpdate");
 //const Profile = require("../models/Profile");
 require("dotenv").config();
 
+// Get All Users (excluding passwords)
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select("-password");
+
+    // If no users found
+    if (!users || users.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No users found",
+      });
+    }
+
+    // Return the user list
+    return res.status(200).json({
+      success: true,
+      message: "Users fetched successfully",
+      users,
+    });
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch users",
+      error: error.message,
+    });
+  }
+};
+
+// Edit User Details by ID
+exports.editUser = async (req, res) => {
+  try {
+    const { userId } = req.params; // user ID from URL params
+    const { name, email, role } = req.body; // fields to update
+
+    if (!name && !email && !role) {
+      return res.status(400).json({
+        success: false,
+        message: "At least one field (name, email, role) is required to update",
+      });
+    }
+
+    // Update user (exclude password updates here)
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: { name, email, role } },
+      { new: true, runValidators: true, select: "-password" }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "User details updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error("Error updating user details:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error updating user details",
+      error: error.message,
+    });
+  }
+};
+
+// Delete User by ID
+exports.deleteUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const deletedUser = await User.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "User deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error deleting user",
+      error: error.message,
+    });
+  }
+};
+
 // Get user details using token
 exports.getUserDetails = async (req, res) => {
   try {
@@ -39,18 +138,11 @@ exports.getUserDetails = async (req, res) => {
   }
 };
 
-
 // Register Controller for Registering USers
 exports.register = async (req, res) => {
   try {
     // Destructure fields from the request body
-    const {
-      name,
-      email,
-      password,
-      confirmPassword,
-      role,
-    } = req.body;
+    const { name, email, password, confirmPassword, role } = req.body;
     // Check if All Details are there or not
     if (!name || !email || !password || !confirmPassword) {
       return res.status(403).send({
@@ -157,7 +249,7 @@ exports.signin = async (req, res) => {
       const payload = {
         email: user.email,
         id: user._id,
-        accountType: user.accountType,
+        role: user.role,
       };
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: "24h",
@@ -165,6 +257,8 @@ exports.signin = async (req, res) => {
 
       // Save token to user document in database
       user.token = token;
+      user.lastActive = new Date();
+      await user.save();
       user.password = undefined;
       // Set cookie for token and return success response
       const options = {
