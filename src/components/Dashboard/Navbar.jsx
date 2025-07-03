@@ -146,7 +146,7 @@ const Navbar = () => {
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center space-x-2 cursor-pointer p-1 rounded-full hover:bg-gray-100 transition-colors">
                   <Avatar className="h-9 w-9">
-                    <AvatarImage src={user?.avatarUrl} alt={user?.name} />
+                    <AvatarImage src={user?.image} alt={user?.name} />
                     <AvatarFallback className="bg-[#012950] text-white">
                       {getInitials(user?.name)}
                     </AvatarFallback>

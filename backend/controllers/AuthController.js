@@ -4,6 +4,7 @@ const OTP = require("../models/OTP");
 const jwt = require("jsonwebtoken");
 const otpGenerator = require("otp-generator");
 const mailSender = require("../utils/mailSender");
+const { uploadImageToCloudinary } = require("../utils/imageUploader")
 const { passwordUpdated } = require("../mail/templates/passwordUpdate");
 //const Profile = require("../models/Profile");
 require("dotenv").config();
@@ -359,7 +360,7 @@ exports.changePassword = async (req, res) => {
       // If old password does not match, return a 401 (Unauthorized) error
       return res
         .status(401)
-        .json({ success: false, message: "The password is incorrect" });
+        .json({ success: false, message: "The old password is incorrect" });
     }
 
     // Update password
@@ -377,7 +378,7 @@ exports.changePassword = async (req, res) => {
         "Password for your account has been updated",
         passwordUpdated(
           updatedUserDetails.email,
-          `Password updated successfully for ${updatedUserDetails.firstName} ${updatedUserDetails.lastName}`
+          `Password updated successfully for ${updatedUserDetails.name}`
         )
       );
       console.log("Email sent successfully:", emailResponse.response);
@@ -405,3 +406,73 @@ exports.changePassword = async (req, res) => {
     });
   }
 };
+
+exports.updateImage = async (req, res) => {
+  try {
+    const displayPicture = req.files.displayPicture
+    const userId = req.user.id
+    const image = await uploadImageToCloudinary(
+      displayPicture,
+      process.env.FOLDER_NAME,
+      1000,
+      1000
+    )
+    console.log(image)
+    const updatedProfile = await User.findByIdAndUpdate(
+      { _id: userId },
+      { image: image.secure_url },
+      { new: true }
+    )
+    res.send({
+      success: true,
+      message: `Image Updated successfully`,
+      data: updatedProfile,
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    })
+  }
+}
+
+exports.updateBasicInfo = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const updatedData = {};
+
+    // Conditionally update name if it's non-empty
+    if (req.body.name && req.body.name.trim() !== "") {
+      updatedData.name = req.body.name.trim();
+    }
+
+    // Conditionally update email if it's non-empty
+    if (req.body.email && req.body.email.trim() !== "") {
+      updatedData.email = req.body.email.trim();
+    }
+
+    // If no valid fields provided
+    if (Object.keys(updatedData).length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No valid fields provided for update.",
+      });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updatedData, {
+      new: true,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "User profile updated successfully.",
+      data: updatedUser,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+

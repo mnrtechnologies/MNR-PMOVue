@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
-import lock from "../../assets/lock.png"
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-hot-toast';
+import { changePassword } from '../../services/oprations/authAPI';
+import lock from "../../assets/lock.png";
 
 const ChangePassword = () => {
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     oldPassword: '',
     newPassword: '',
@@ -17,8 +22,28 @@ const ChangePassword = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: Add password change logic
-    console.log('Password Change Submitted:', formData);
+
+    const { oldPassword, newPassword, confirmPassword } = formData;
+
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      toast.error("Please fill all fields");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      toast.error("New password and confirm password do not match");
+      return;
+    }
+
+    dispatch(
+      changePassword(oldPassword, newPassword, () => {
+        setFormData({
+          oldPassword: '',
+          newPassword: '',
+          confirmPassword: '',
+        });
+      })
+    );
   };
 
   return (
@@ -43,7 +68,7 @@ const ChangePassword = () => {
           {/* Right Form Section */}
           <div className="flex flex-col gap-6 md:w-2/3">
             <div>
-              <label htmlFor="old-password" className="text-[#7f7f7f] font-semibold text-sm leading-5">
+              <label htmlFor="oldPassword" className="text-[#7f7f7f] font-semibold text-sm leading-5">
                 Old Password
               </label>
               <input
@@ -56,7 +81,7 @@ const ChangePassword = () => {
             </div>
 
             <div>
-              <label htmlFor="new-password" className="text-[#7f7f7f] font-semibold text-sm leading-5">
+              <label htmlFor="newPassword" className="text-[#7f7f7f] font-semibold text-sm leading-5">
                 New Password
               </label>
               <input
@@ -69,7 +94,7 @@ const ChangePassword = () => {
             </div>
 
             <div>
-              <label htmlFor="confirm-password" className="text-[#7f7f7f] font-semibold text-sm leading-5">
+              <label htmlFor="confirmPassword" className="text-[#7f7f7f] font-semibold text-sm leading-5">
                 Confirm Password
               </label>
               <input

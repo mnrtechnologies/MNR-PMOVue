@@ -40,7 +40,7 @@ const AddUserForm = () => {
       <div>
         <h2 className="text-xl font-semibold text-blue-900">Add New User</h2>
         <p className="text-gray-500 text-md font-semibold mt-1">
-          Create new user and to this Portal
+          Create new user to this Portal
         </p>
         <div className="h-[2px] w-full bg-blue-500 mt-2" />
       </div>

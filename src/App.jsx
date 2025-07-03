@@ -14,7 +14,7 @@ import AiInsights2 from "./pages/Dashboard/AiInsights2";
 import ProfileManagement from "./pages/Dashboard/ProfileManagement";
 import PasswordAuthentication from "./pages/Dashboard/PasswordAuthentication";
 import JiraSummaryPage from "./pages/Dashboard/jiraSummaryPage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getUserDetails } from "./services/oprations/authAPI";
 import Notifications from "./pages/Dashboard/Notification";
 import UserManagement from "./pages/Dashboard/Admin/UserManagement";
@@ -28,10 +28,15 @@ const RedirectIfLoggedIn = ({ children }) => {
 const App = () => {
 
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.profile);
 
     useEffect(() => {
     dispatch(getUserDetails());
   }, [dispatch]);
+
+      useEffect(() => {
+   
+  }, [user?.image]);
 
   return (
     <Router>

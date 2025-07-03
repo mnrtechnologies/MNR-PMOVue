@@ -15,7 +15,109 @@ const {
   GET_ALL_USERS_API,
   EDIT_USER_API,
   DELETE_USER_API,
+  CHANGE_PASSWORD_API,
+  UPDATE_IMAGE_API,
+  UPDATE_INFO_API
 } = endpoints;
+
+export function updateImage(displayPicture, onSuccess) {
+  return async (dispatch) => {
+    const toastId = toast.loading("Uploading image...");
+    try {
+      const token = JSON.parse(localStorage.getItem("token"));
+
+      // FormData to send image file
+      const formData = new FormData();
+      formData.append("displayPicture", displayPicture);
+
+      const response = await apiConnector("PUT", UPDATE_IMAGE_API, formData, {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      });
+
+      if (!response.data.success) {
+        throw new Error(response.data.message);
+      }
+      dispatch(setUser(response.data.data));
+
+      toast.success("Image updated successfully");
+      onSuccess && onSuccess(response.data.data);
+    } catch (error) {
+      console.error("UPDATE_IMAGE ERROR:", error);
+      toast.error(error?.response?.data?.message || "Failed to update image");
+    } finally {
+      toast.dismiss(toastId);
+    }
+  };
+}
+
+export function updateBasicInfo({ name, email }, onSuccess) {
+  return async (dispatch) => {
+    const toastId = toast.loading("Updating info...");
+    try {
+      const token = JSON.parse(localStorage.getItem("token"));
+
+      const response = await apiConnector(
+        "PUT",
+        UPDATE_INFO_API,
+        { name, email },
+        {
+          Authorization: `Bearer ${token}`,
+        }
+      );
+
+      if (!response.data.success) {
+        throw new Error(response.data.message);
+      }
+
+      dispatch(setUser(response.data.data));
+
+      toast.success("Info updated successfully");
+      onSuccess && onSuccess(response.data.data);
+    } catch (error) {
+      console.error("UPDATE_BASIC_INFO ERROR:", error);
+      toast.error(error?.response?.data?.message || "Failed to update info");
+    } finally {
+      toast.dismiss(toastId);
+    }
+  };
+}
+
+
+//change password 
+export function changePassword(oldPassword, newPassword, onSuccess) {
+  console.log("api",CHANGE_PASSWORD_API)
+  return async (dispatch) => {
+    const toastId = toast.loading("Changing password...");
+    //dispatch(setLoading(true));
+    try {
+      const token = JSON.parse(localStorage.getItem("token"));
+      const response = await apiConnector(
+        "PUT",
+        CHANGE_PASSWORD_API,
+        { oldPassword, newPassword },
+        {
+          Authorization: `Bearer ${token}`,
+        }
+      );
+
+      if (!response.data.success) {
+        throw new Error(response.data.message);
+      }
+
+      toast.success("Password changed successfully");
+
+      // Call optional success callback to do things like clear form
+      if (onSuccess) onSuccess();
+    } catch (error) {
+      console.error("CHANGE_PASSWORD ERROR:", error);
+      toast.error(error?.response?.data?.message || "Failed to change password");
+    } finally {
+      //  dispatch(setLoading(false));
+      toast.dismiss(toastId);
+    }
+  };
+}
 
 //get all users
 export function getAllUsers() {

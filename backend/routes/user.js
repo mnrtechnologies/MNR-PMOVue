@@ -1,6 +1,6 @@
 // Import the required modules
 const express = require("express")
-const { signin, sendotp, register, getUserDetails, getAllUsers, deleteUser, editUser } = require("../controllers/AuthController")
+const { signin, sendotp, register, getUserDetails, getAllUsers, deleteUser, editUser, changePassword, updateImage, updateBasicInfo } = require("../controllers/AuthController")
 const { resetPasswordToken, resetPassword } = require("../controllers/resetPasswordController")
 const router = express.Router()
 const {auth, isAdmin} = require("../middleware/auth")
@@ -30,6 +30,13 @@ router.post("/register",auth,isAdmin, register)
 router.post("/sendotp", sendotp)
 
 // // Route for Changing the password
+router.put("/change-password",auth,changePassword)
+
+//Profile image
+router.put("/update-image",auth,updateImage)
+
+//update basic name, email
+router.put("/update-info",auth,updateBasicInfo);
 
 // Route for generating a reset password token
 router.post("/reset-password-token", resetPasswordToken)

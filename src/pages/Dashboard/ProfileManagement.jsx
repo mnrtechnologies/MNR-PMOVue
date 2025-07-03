@@ -1,28 +1,83 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import hand from "../../assets/Hand.png";
 import Eclipse from "../../assets/Ellipse.png";
 import Profile from "../../assets/Profile.png";
+import { updateBasicInfo, updateImage } from "../../services/oprations/authAPI";
 
 const ProfileSettings = () => {
+  const { user } = useSelector((state) => state.profile);
+  const dispatch = useDispatch();
+
   const [profile, setProfile] = useState({
     name: "",
     email: "",
-    contact: "",
     jiraEmail: "",
     jiraSite: "",
     jiraApiKey: "",
+    avatar: null,
+    previewAvatar: null,
   });
 
+  // Populate name/email when user is loaded
+  useEffect(() => {
+    if (user) {
+      setProfile((prev) => ({
+        ...prev,
+        name: user.name || "",
+        email: user.email || "",
+      }));
+    }
+  }, [user]);
+
+  useEffect(() => {
+    // Cleanup preview URL on component unmount
+    return () => {
+      if (profile.previewAvatar) {
+        URL.revokeObjectURL(profile.previewAvatar);
+      }
+    };
+  }, [profile.previewAvatar]);
+
   const handleChange = (e) => {
+    const { id, value } = e.target;
     setProfile((prev) => ({
       ...prev,
-      [e.target.id]: e.target.value,
+      [id]: value,
     }));
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const previewUrl = URL.createObjectURL(file);
+      setProfile((prev) => ({
+        ...prev,
+        avatar: file,
+        previewAvatar: previewUrl,
+      }));
+    }
+  };
+
   const handleSave = () => {
-    // TODO: Save changes logic
-    console.log("Saved profile:", profile);
+    if (profile.name.trim() || profile.email.trim()) {
+      dispatch(
+        updateBasicInfo(
+          { name: profile.name.trim(), email: profile.email.trim() },
+          (updatedUser) => {
+            console.log("Basic info updated:", updatedUser);
+          }
+        )
+      );
+    }
+
+    if (profile.avatar) {
+      dispatch(
+        updateImage(profile.avatar, (updatedUser) => {
+          console.log("Image updated:", updatedUser);
+        })
+      );
+    }
   };
 
   return (
@@ -33,32 +88,52 @@ const ProfileSettings = () => {
           {/* Avatar section */}
           <div className="flex flex-col items-center space-y-3 md:w-1/3">
             <div className="relative w-32 h-32">
-              {/* Circle Background */}
-              <img
-                src={Eclipse}
-                alt="Eclipse Background"
-                className="w-32 h-32 rounded-full"
-              />
-
-              {/* Profile Photo on top */}
-              <img
-                src={Profile}
-                alt="Profile"
-                className="absolute top-1/2 left-1/2 w-16 h-16  transform -translate-x-1/2 -translate-y-1/2"
-              />
+              {profile.previewAvatar ? (
+                <img
+                  src={profile.previewAvatar}
+                  alt="Preview Avatar"
+                  className="w-32 h-32 rounded-full object-cover border-2 border-blue-500"
+                />
+              ) : user?.image ? (
+                <img
+                  src={user.image}
+                  alt="User Avatar"
+                  className="w-32 h-32 rounded-full object-cover border-2 border-gray-300"
+                />
+              ) : (
+                <>
+                  <img
+                    src={Eclipse}
+                    alt="Eclipse Background"
+                    className="w-32 h-32 rounded-full"
+                  />
+                  <img
+                    src={Profile}
+                    alt="Profile"
+                    className="absolute top-1/2 left-1/2 w-16 h-16 transform -translate-x-1/2 -translate-y-1/2"
+                  />
+                </>
+              )}
             </div>
 
+            <input
+              type="file"
+              accept="image/*"
+              id="avatarUpload"
+              onChange={handleImageChange}
+              className="hidden"
+            />
+
+            <label htmlFor="avatarUpload">
+              <div className="cursor-pointer bg-[#001f3f] text-white font-semibold rounded-full px-8 py-2 shadow-md hover:shadow-lg transition-shadow text-center">
+                Upload Avatar
+              </div>
+            </label>
+
             <p className="text-center text-sm text-[#001f3f] font-normal leading-tight">
-              Allowed *.jpeg, *.jpg, *.png
-              <br />
+              Allowed *.jpeg, *.jpg, *.png<br />
               Max size of 3MB
             </p>
-            <button
-              type="button"
-              className="bg-[#001f3f] text-white font-semibold rounded-full px-8 py-2 shadow-md hover:shadow-lg transition-shadow"
-            >
-              Upload Avatar
-            </button>
           </div>
 
           {/* Profile form */}
@@ -92,22 +167,6 @@ const ProfileSettings = () => {
                 value={profile.email}
                 onChange={handleChange}
                 placeholder="demo@gmail.com"
-                className="w-full rounded-xl py-3 px-4 text-gray-400 placeholder-gray-400 shadow-md focus:outline-none focus:ring-2 focus:ring-[#001f3f]"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="contact"
-                className="block text-[#6b6b6b] font-semibold mb-1"
-              >
-                Contact Number
-              </label>
-              <input
-                type="text"
-                id="contact"
-                value={profile.contact}
-                onChange={handleChange}
-                placeholder="9034663321"
                 className="w-full rounded-xl py-3 px-4 text-gray-400 placeholder-gray-400 shadow-md focus:outline-none focus:ring-2 focus:ring-[#001f3f]"
               />
             </div>

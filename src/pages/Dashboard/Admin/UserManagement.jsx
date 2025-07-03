@@ -109,9 +109,20 @@ export default function UserManagement() {
             >
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center font-semibold text-sm">
-                    {user.name[0].toUpperCase()}
+                  <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+                    {user.image ? (
+                      <img
+                        src={user.image}
+                        alt="User"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-sm font-semibold text-gray-700">
+                        {user.name[0].toUpperCase()}
+                      </span>
+                    )}
                   </div>
+
                   <div>
                     <p className="text-base font-semibold">{user.name}</p>
                     <p className="text-sm text-gray-500">{user.email}</p>
@@ -180,9 +191,20 @@ export default function UserManagement() {
                     <input type="checkbox" />
                   </td>
                   <td className="p-3 flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center font-medium text-sm">
-                      {user.name[0].toUpperCase()}
+                    <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+                      {user.image ? (
+                        <img
+                          src={user.image}
+                          alt="User"
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-xs font-medium text-gray-700">
+                          {user.name[0].toUpperCase()}
+                        </span>
+                      )}
                     </div>
+
                     <div>
                       <p className="font-medium text-sm">{user.name}</p>
                       <p className="text-xs text-gray-500">{user.email}</p>
