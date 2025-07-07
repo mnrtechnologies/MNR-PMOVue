@@ -56,7 +56,7 @@ exports.passwordUpdated = (email, name) => {
     <body>
         <div class="container">
             					<a href="https://mnr-pmo-vue.vercel.app"><img class="PPPVue logo"
-					src="https://res.cloudinary.com/dceqx37jk/image/upload/v1751869016/PPPVue/lptazcgocfgwbqyid0bd.png" alt="PPPVue Logo"></a>
+					src="https://res.cloudinary.com/dceqx37jk/image/upload/v1751883905/PPPVue/dif8fznra6tucq50csn5.png" alt="PPPVue Logo"></a>
             <div class="message">Password Update Confirmation</div>
             <div class="body">
                 <p>Hey, ${name}</p>

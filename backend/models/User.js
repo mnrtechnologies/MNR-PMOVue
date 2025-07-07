@@ -41,10 +41,10 @@ const userSchema = new mongoose.Schema(
     resetPasswordExpires: {
       type: Date,
     },
-    // Add timestamps for when the document is created and last modified
+    credentials: { type: mongoose.Schema.Types.ObjectId, ref: 'credentials', required: true }
+
   },
   { timestamps: true }
 );
 
-// Export the Mongoose model for the user schema, using the name "user"
 module.exports = mongoose.model("user", userSchema);

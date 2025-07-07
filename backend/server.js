@@ -2,6 +2,7 @@
 const express = require("express");
 const app = express();
 const userRoutes = require("./routes/user");
+const credentialsRoutes = require("./routes/credentials")
 const chatbotRoutes = require("./routes/chatbot")
 const database = require("./config/database");
 const cookieParser = require("cookie-parser");
@@ -42,6 +43,7 @@ app.use(
 // Setting up routes
 app.use("/api/auth", userRoutes);
 app.use("/api",chatbotRoutes)
+app.use("/api",credentialsRoutes)
 
 // Testing the server
 app.get("/", (req, res) => {
