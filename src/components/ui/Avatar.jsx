@@ -18,15 +18,17 @@ function Avatar({ className, ...props }) {
   )
 }
 
-function AvatarImage({ className, ...props }) {
+function AvatarImage({ src, alt, className = "", ...props }) {
   return (
-    <AvatarPrimitive.Image
-      data-slot="avatar-image"
-      className={cn("aspect-square size-full", className)}
+    <img
+      src={src}
+      alt={alt}
+      className={`w-full h-full object-cover rounded-full ${className}`}
       {...props}
     />
-  )
+  );
 }
+
 
 function AvatarFallback({ className, ...props }) {
   return (

@@ -67,7 +67,7 @@ const otpTemplate = (otp) => {
 	<body>
 		<div class="container">
 					<a href="https://mnr-pmo-vue.vercel.app"><img class="PPPVue logo"
-					src="https://res.cloudinary.com/dceqx37jk/image/upload/v1751540332/PPPVue/lmuruj2krgtnm6cvkcq1.png" alt="PPPVue Logo"></a>
+					src="https://res.cloudinary.com/dceqx37jk/image/upload/v1751869016/PPPVue/lptazcgocfgwbqyid0bd.png" alt="PPPVue Logo"></a>
 			<div class="message">OTP Verification Email</div>
 			<div class="body">
 				<p>Dear User,</p>
