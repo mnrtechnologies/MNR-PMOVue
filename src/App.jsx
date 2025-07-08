@@ -19,6 +19,7 @@ import { getUserDetails } from "./services/oprations/authAPI";
 import Notifications from "./pages/Dashboard/Notification";
 import UserManagement from "./pages/Dashboard/Admin/UserManagement";
 import AddUserForm from "./pages/Dashboard/Admin/AddUserForm";
+import JiraDetails from "./pages/Dashboard/jiraDetails";
 
 const RedirectIfLoggedIn = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -69,6 +70,7 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path="notification" element={<Notifications/>} />
           <Route path="insights" element={<AiInsights />} />
+          <Route path="insights/jira-details" element={<JiraDetails/>} />
           <Route path="settings">
             <Route path="profile" element={<ProfileManagement />} />
             <Route path="password" element={<PasswordAuthentication />} />
@@ -78,6 +80,7 @@ const App = () => {
         </Route>
 
         {/* Public Pages */}
+        
         <Route path="/jira-summary/:projectSlug" element={<JiraSummaryPage />} />
         <Route path="/ai-insights/:projectSlug" element={<JiraSummaryPage />} />
       </Routes>

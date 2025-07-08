@@ -141,7 +141,7 @@ const GoogleCard = ({ id, priority }) => {
         <div className="h-2 rounded-full bg-gray-300 w-16"></div>
       </div>
       <a
-        href="#"
+        href="insights/jira-details"
         className="text-[#004C8C] text-xs font-semibold hover:underline"
       >
         Detail view

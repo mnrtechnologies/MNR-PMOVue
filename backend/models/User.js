@@ -41,8 +41,10 @@ const userSchema = new mongoose.Schema(
     resetPasswordExpires: {
       type: Date,
     },
-    credentials: { type: mongoose.Schema.Types.ObjectId, ref: 'credentials', required: true }
-
+    jira_credential_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "credentials",
+    },
   },
   { timestamps: true }
 );
