@@ -20,13 +20,14 @@ export const endpoints = {
   DELETE_USER_API: (userId) => `${BASE_URL}/auth/delete-user/${userId}`,
 };
 
+//JIRA ENDPOINTS
 export const jiraendpoints = {
-
   GET_ISSUES_API: BASE_URL + "/jira",
- // GET_ISSUES_API: BASE_URL + "/jira/connect",
-
+  JIRA_CONNECT_API: BASE_URL + "/jira/connect",
+  GET_JIRA_CREDENTIALS_API: BASE_URL + "/jira/credentials",
 }
 
+//CHATBOT ENDPOINTS
 export const chatbotendpoints = {
   CHATBOT_API: BASE_URL + "/chatbot",
 };

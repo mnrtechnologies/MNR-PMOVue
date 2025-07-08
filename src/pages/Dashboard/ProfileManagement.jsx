@@ -1,25 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import hand from "../../assets/Hand.png";
 import Eclipse from "../../assets/Ellipse.png";
 import Profile from "../../assets/Profile.png";
 import { updateBasicInfo, updateImage } from "../../services/oprations/authAPI";
+import {
+  fetchJiraCredentials,
+  jiraConnect,
+} from "../../services/oprations/jiraAPI";
 
 const ProfileSettings = () => {
   const { user } = useSelector((state) => state.profile);
+  const { credentials } = useSelector((state) => state.jiradetail);
   const dispatch = useDispatch();
 
   const [profile, setProfile] = useState({
     name: "",
     email: "",
-    jiraEmail: "",
-    jiraSite: "",
-    jiraApiKey: "",
     avatar: null,
     previewAvatar: null,
   });
 
-  // Populate name/email when user is loaded
+  const [jira, setJira] = useState({
+    jiraEmail: "",
+    jiraDomain: "",
+    jiraApiKey: "",
+  });
+
+  // Populate name/email from user
   useEffect(() => {
     if (user) {
       setProfile((prev) => ({
@@ -30,8 +39,24 @@ const ProfileSettings = () => {
     }
   }, [user]);
 
+  // Populate Jira details from credentials
   useEffect(() => {
-    // Cleanup preview URL on component unmount
+    dispatch(fetchJiraCredentials());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (credentials) {
+      setJira({
+        jiraEmail: credentials.jiraEmail || "",
+        jiraDomain: credentials.jiraDomain || "",
+        jiraApiKey: credentials.jira_api_key || "Your API KEY is Secure",
+      });
+    }
+    console.log("credentials", credentials, jira);
+  }, [credentials]);
+
+  // Cleanup avatar preview on unmount
+  useEffect(() => {
     return () => {
       if (profile.previewAvatar) {
         URL.revokeObjectURL(profile.previewAvatar);
@@ -39,9 +64,17 @@ const ProfileSettings = () => {
     };
   }, [profile.previewAvatar]);
 
-  const handleChange = (e) => {
+  const handleProfileChange = (e) => {
     const { id, value } = e.target;
     setProfile((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+
+  const handleJiraChange = (e) => {
+    const { id, value } = e.target;
+    setJira((prev) => ({
       ...prev,
       [id]: value,
     }));
@@ -77,6 +110,23 @@ const ProfileSettings = () => {
           console.log("Image updated:", updatedUser);
         })
       );
+    }
+
+    if (jira.jiraEmail && jira.jiraDomain && jira.jiraApiKey) {
+      dispatch(
+        jiraConnect(
+          {
+            jira_email: jira.jiraEmail,
+            jira_domain: jira.jiraDomain,
+            jira_api_key: jira.jiraApiKey,
+          },
+          (updatedJIRA) => {
+            console.log("Jira updated:", updatedJIRA);
+          }
+        )
+      );
+    } else {
+      console.log("Please fill all Jira fields before submitting.");
     }
   };
 
@@ -131,7 +181,8 @@ const ProfileSettings = () => {
             </label>
 
             <p className="text-center text-sm text-[#001f3f] font-normal leading-tight">
-              Allowed *.jpeg, *.jpg, *.png<br />
+              Allowed *.jpeg, *.jpg, *.png
+              <br />
               Max size of 3MB
             </p>
           </div>
@@ -149,7 +200,7 @@ const ProfileSettings = () => {
                 type="text"
                 id="name"
                 value={profile.name}
-                onChange={handleChange}
+                onChange={handleProfileChange}
                 placeholder="Smith John"
                 className="w-full rounded-xl py-3 px-4 text-gray-400 placeholder-gray-400 shadow-md focus:outline-none focus:ring-2 focus:ring-[#001f3f]"
               />
@@ -165,7 +216,7 @@ const ProfileSettings = () => {
                 type="email"
                 id="email"
                 value={profile.email}
-                onChange={handleChange}
+                onChange={handleProfileChange}
                 placeholder="demo@gmail.com"
                 className="w-full rounded-xl py-3 px-4 text-gray-400 placeholder-gray-400 shadow-md focus:outline-none focus:ring-2 focus:ring-[#001f3f]"
               />
@@ -195,9 +246,21 @@ const ProfileSettings = () => {
 
           {/* Jira Connection */}
           <form className="bg-[#f3f7f6] rounded-xl p-6 flex flex-col space-y-4 flex-1 shadow-md">
-            <p className="text-[#001f3f] font-semibold text-sm">
+            <p className="text-[#001f3f] font-semibold text-sm flex items-center gap-2">
               Jira connection
+              {credentials ? (
+                <FaCheckCircle
+                  className="text-green-500 text-base"
+                  title="Connected"
+                />
+              ) : (
+                <FaTimesCircle
+                  className="text-red-500 text-base"
+                  title="Not connected"
+                />
+              )}
             </p>
+
             <div>
               <label
                 htmlFor="jiraEmail"
@@ -208,24 +271,24 @@ const ProfileSettings = () => {
               <input
                 type="email"
                 id="jiraEmail"
-                value={profile.jiraEmail}
-                onChange={handleChange}
+                value={jira.jiraEmail}
+                onChange={handleJiraChange}
                 placeholder="demo@gmail.com"
                 className="w-full rounded-xl py-3 px-4 text-gray-400 placeholder-gray-400 shadow-md focus:outline-none focus:ring-2 focus:ring-[#001f3f]"
               />
             </div>
             <div>
               <label
-                htmlFor="jiraSite"
+                htmlFor="jiraDomain"
                 className="block text-[#6b6b6b] font-semibold mb-1"
               >
                 Jira Site URL
               </label>
               <input
                 type="text"
-                id="jiraSite"
-                value={profile.jiraSite}
-                onChange={handleChange}
+                id="jiraDomain"
+                value={jira.jiraDomain}
+                onChange={handleJiraChange}
                 placeholder="https://yoursite.atlassian.net"
                 className="w-full rounded-xl py-3 px-4 text-gray-400 placeholder-gray-400 shadow-md focus:outline-none focus:ring-2 focus:ring-[#001f3f]"
               />
@@ -240,8 +303,8 @@ const ProfileSettings = () => {
               <input
                 type="text"
                 id="jiraApiKey"
-                value={profile.jiraApiKey}
-                onChange={handleChange}
+                value={jira.jiraApiKey}
+                onChange={handleJiraChange}
                 placeholder="your-api-key"
                 className="w-full rounded-xl py-3 px-4 text-gray-400 placeholder-gray-400 shadow-md focus:outline-none focus:ring-2 focus:ring-[#001f3f]"
               />

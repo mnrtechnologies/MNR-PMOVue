@@ -104,10 +104,9 @@ const jiraIssueSchema = new mongoose.Schema(
       type: String,
     },
 
-    // Optional user reference (if issues are user-specific)
-    user: {
+   user_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
+      ref: "credentials",
     },
   },
   { timestamps: true } // Adds createdAt and updatedAt

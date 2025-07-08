@@ -1,5 +1,5 @@
 // Import the Mongoose library
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const CredentialSchema = new mongoose.Schema({
   jira_email: { type: String, required: true },
@@ -12,4 +12,7 @@ const CredentialSchema = new mongoose.Schema({
   timestamps: true 
 });
 
-module.exports = mongoose.model('credentials', CredentialSchema);
+
+
+const Credential = mongoose.model('credentials', CredentialSchema);
+export default Credential;
