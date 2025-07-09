@@ -25,7 +25,7 @@ const ProjectPredictionCard = ({ projectInfo, dataSource }) => {
         if (dataSource === 'Jira') {
             navigate(`/dashboard/insights/jira-summary/${projectSlug}`);
         } else {
-            navigate(`/ai-insights/${projectSlug}`);
+            navigate(`/dashboard/insights/google-summary/${projectSlug}`);
         }
     };
 

@@ -1,6 +1,6 @@
-
 import React from "react";
 import { FaEye } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const GoogleCard = ({
   startDate,
@@ -44,7 +44,8 @@ const GoogleCard = ({
         {userInitial}
       </div>
       <p className="text-sm font-semibold text-gray-900">
-        {userName} <span className="font-normal text-gray-600">/ {userCode}</span>
+        {userName}{" "}
+        <span className="font-normal text-gray-600">/ {userCode}</span>
       </p>
       <p className="ml-auto text-red-600 font-bold text-sm">{percent}%</p>
     </div>
@@ -53,7 +54,11 @@ const GoogleCard = ({
       <p className={`text-${statusColor}-500 font-bold text-sm`}>{status}</p>
       <p className="text-xs text-gray-600">{progress}%</p>
     </div>
-    <progress className="progress-bar w-full h-1 rounded-full" value={progress} max="100" />
+    <progress
+      className="progress-bar w-full h-1 rounded-full"
+      value={progress}
+      max="100"
+    />
     <div className="flex justify-between text-xs text-gray-600 mt-2 mb-4">
       <span>
         <span className="inline-block w-3 h-3 rounded-full bg-red-600 mr-1"></span>
@@ -68,11 +73,12 @@ const GoogleCard = ({
         {assigneeInitial}
       </div>
       <p className="font-semibold text-gray-900">{assigneeName}</p>
-      <FaEye className="ml-auto text-blue-900 cursor-pointer" title="Detail View" />
+      <Link to="/dashboard/insights/google-details" title="Detail View">
+        <FaEye className="ml-auto text-blue-900 cursor-pointer" />
+      </Link>
       <span className="font-semibold text-blue-900 text-xs">Detail View</span>
     </div>
   </div>
 );
 
 export default GoogleCard;
-

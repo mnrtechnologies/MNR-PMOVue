@@ -3,18 +3,35 @@ import { ResponsiveContainer, PieChart, Pie, Cell, Sector } from 'recharts';
 
 const COLORS = ['#10b981', '#3b82f6', '#facc15', '#ef4444'];
 
-const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+const renderCustomLabel = ({
+  cx,
+  cy,
+  midAngle,
+  innerRadius,
+  outerRadius,
+  percent,
+}) => {
   const RADIAN = Math.PI / 180;
-  const radius = innerRadius + (outerRadius - innerRadius) * 1.2;
+  // Set radius inside the arc
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
   return (
-    <text x={x} y={y} fill="#374151" textAnchor="middle" dominantBaseline="central" fontSize={12}>
+    <text
+      x={x}
+      y={y}
+      fill="white"
+      textAnchor="middle"
+      dominantBaseline="central"
+      fontSize={12}
+      className="font-semibold"
+    >
       {(percent * 100).toFixed(0)}%
     </text>
   );
 };
+
 
 const DoughnutChart = ({ data, text, subText }) => {
   return (

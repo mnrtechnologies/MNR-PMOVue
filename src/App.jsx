@@ -13,14 +13,16 @@ import AiInsights from "./pages/Dashboard/AiInsights";
 import AiInsights2 from "./pages/Dashboard/AiInsights2";
 import ProfileManagement from "./pages/Dashboard/ProfileManagement";
 import PasswordAuthentication from "./pages/Dashboard/PasswordAuthentication";
-import JiraSummaryPage from "./pages/Dashboard/jiraSummaryPage";
+
 import { useDispatch, useSelector } from "react-redux";
 import { getUserDetails } from "./services/oprations/authAPI";
 import Notifications from "./pages/Dashboard/Notification";
 import UserManagement from "./pages/Dashboard/Admin/UserManagement";
 import AddUserForm from "./pages/Dashboard/Admin/AddUserForm";
 import JiraDetails from "./pages/Dashboard/jiraDetails";
-
+import GoogleSummaryPage from "./pages/Dashboard/GoogleSummaryPage";
+import JiraSummary from "./pages/Dashboard/JiraSummary";
+import GoogleDetails from "./pages/Dashboard/googleDetails"
 const RedirectIfLoggedIn = ({ children }) => {
   const token = localStorage.getItem("token");
   return token ? <Navigate to="/dashboard" replace /> : children;
@@ -69,9 +71,11 @@ const App = () => {
         >
           <Route index element={<Home />} />
           <Route path="notification" element={<Notifications/>} />
-          <Route path="insights/jira-summary/:projectSlug" element={<JiraSummaryPage />} />
+          <Route path="insights/google-summary/:projectSlug" element={<GoogleSummaryPage/>} />
+          <Route path="insights/jira-summary/:projectSlug" element={<JiraSummary/>} />
           <Route path="insights" element={<AiInsights />} />
           <Route path="insights/jira-details/:id" element={<JiraDetails/>} />
+          <Route path="insights/google-details" element={<GoogleDetails/>} />
           <Route path="settings">
             <Route path="profile" element={<ProfileManagement />} />
             <Route path="password" element={<PasswordAuthentication />} />
@@ -82,8 +86,7 @@ const App = () => {
 
         {/* Public Pages */}
         
-        {/* <Route path="/jira-summary/:projectSlug" element={<JiraSummaryPage />} /> */}
-        <Route path="/ai-insights/:projectSlug" element={<JiraSummaryPage />} />
+
       </Routes>
     </Router>
   );
