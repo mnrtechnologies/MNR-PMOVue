@@ -69,8 +69,9 @@ const App = () => {
         >
           <Route index element={<Home />} />
           <Route path="notification" element={<Notifications/>} />
+          <Route path="insights/jira-summary/:projectSlug" element={<JiraSummaryPage />} />
           <Route path="insights" element={<AiInsights />} />
-          <Route path="insights/jira-details" element={<JiraDetails/>} />
+          <Route path="insights/jira-details/:id" element={<JiraDetails/>} />
           <Route path="settings">
             <Route path="profile" element={<ProfileManagement />} />
             <Route path="password" element={<PasswordAuthentication />} />
@@ -81,7 +82,7 @@ const App = () => {
 
         {/* Public Pages */}
         
-        <Route path="/jira-summary/:projectSlug" element={<JiraSummaryPage />} />
+        {/* <Route path="/jira-summary/:projectSlug" element={<JiraSummaryPage />} /> */}
         <Route path="/ai-insights/:projectSlug" element={<JiraSummaryPage />} />
       </Routes>
     </Router>

@@ -23,7 +23,7 @@ function Dashboard() {
 
     
       <div className="flex-1 ">
-      <div className="h-full w-full overflow-y-auto py-10 lg:ml-34">
+      <div className="h-full w-full overflow-y-auto  lg:ml-34">
             <Outlet />
         </div>
       </div>

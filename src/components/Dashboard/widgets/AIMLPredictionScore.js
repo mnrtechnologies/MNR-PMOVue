@@ -23,7 +23,7 @@ const ProjectPredictionCard = ({ projectInfo, dataSource }) => {
         const projectSlug = projectInfo.project.toLowerCase().replace(/ /g, '-');
 
         if (dataSource === 'Jira') {
-            navigate(`/jira-summary/${projectSlug}`);
+            navigate(`/dashboard/insights/jira-summary/${projectSlug}`);
         } else {
             navigate(`/ai-insights/${projectSlug}`);
         }

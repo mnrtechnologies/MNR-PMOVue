@@ -11,7 +11,7 @@ import SpendAndAccruals from '../../components/Dashboard/widgets/SpendAndAccrual
 import FilterWidget from '../../components/Dashboard/widgets/FilterWidget';
 const Home = () => {
     return (
-        <main className="max-w-6xl mx-auto  sm:px-6  lg:px-1  ">
+        <main className="max-w-6xl mx-auto  sm:px-6 mt-4  lg:px-1  ">
              <FilterWidget />
           
             {/* Main grid with a 2/3 and 1/3 column split on large screens */}
@@ -25,14 +25,16 @@ const Home = () => {
                         <SchedulePerformance />
                         <BudgetHealth />
                     </div>
-                    <VendorContractOverview />
-                    <ChangeRiskTracking />
+                    
+                     <IssueRiskCount />
+                     <VendorContractOverview />
                 </div>
                 
                 {/* --- Right Column (Narrower) --- */}
                 <div className="col-span-1 space-y-6">
                     <AIMLPredictionScore />
-                    <IssueRiskCount />
+                   
+                    <ChangeRiskTracking />
                      <SpendAndAccruals />
                 </div>
 

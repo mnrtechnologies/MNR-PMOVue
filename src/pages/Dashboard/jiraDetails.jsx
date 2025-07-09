@@ -6,19 +6,22 @@ import {
   FaExclamationCircle,
 } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { getAllJiraIssues } from "../../services/oprations/jiraAPI";
+import {  getJiraIssueById } from "../../services/oprations/jiraAPI";
+import { useParams } from "react-router-dom";
 
 const ProjectTask = () => {
   const dispatch = useDispatch();
+  const { id } = useParams();
   const [issue, setIssue] = useState(null);
 
   useEffect(() => {
     const fetchIssues = async () => {
       try {
-        const res = await dispatch(getAllJiraIssues());
+        const res = await dispatch(getJiraIssueById(id))
+        console.log("Fetched issue1:", res);
         // console.log("res payload", res);
-        setIssue(res?.[0]);
-        console.log("issue[0]", res?.[0]);
+        setIssue(res);
+        console.log("Fetched issue:", res);
       } catch (error) {
         console.error("Failed to fetch Jira issues:", error);
       }
@@ -52,13 +55,16 @@ const ProjectTask = () => {
     status_transition_log,
     project_name,
     reporter,
+    executive_summary,
+    burnout_flag,
+    last_ai_interaction_day,
   } = issue;
 
   return (
-    <div className="bg-white text-gray-900 max-w-[1200px] mx-auto p-1">
+    <div className="bg-white text-gray-900 max-w-[1200px] mx-auto p-6">
       <header className="flex items-center justify-between border-b border-gray-300 pb-3 mb-6">
         <h1 className="text-[17px] font-normal text-[#0B2E56]">
-          {project_name}
+          {project_name }
         </h1>
       </header>
 
@@ -114,20 +120,24 @@ const ProjectTask = () => {
             <p className="font-semibold text-[14px] flex items-center gap-1">
               Burnout Flag <FaFlag className="text-red-600 text-[14px]" />
             </p>
-            <p className="font-bold text-[#006CA2] text-[16px]">NULL</p>
+            <p className="font-bold text-[#006CA2] text-[16px]">
+              {burnout_flag}
+            </p>
           </div>
           <div className="flex-1 bg-[#F0D7E6] rounded-lg flex justify-between items-center px-4 py-4">
             <p className="font-semibold text-[14px] flex items-center gap-1">
               Executive Summary Flag{" "}
               <FaFlag className="text-red-600 text-[14px]" />
             </p>
-            <p className="font-bold text-[#D31B2B] text-[16px]">NULL</p>
+            <p className="font-bold text-[#D31B2B] text-[16px]">
+              {executive_summary}
+            </p>
           </div>
         </section>
 
         {/* Inactivity and Dates */}
         <section className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1 bg-[#F7FAF9] rounded-lg px-6 py-4">
+          <div className="flex-1 bg-[#F7FAF9] rounded-lg px-6 py-4 space-y-3">
             <div className="flex justify-between">
               <p className="font-semibold text-[14px]">
                 Update Inactivity Days
@@ -144,10 +154,11 @@ const ProjectTask = () => {
           {[
             ["Due Date", due_date],
             ["Last Status Change Date", last_status_change_date],
+            ["Last AI Interaction Date", last_ai_interaction_day],
           ].map(([label, value]) => (
             <div
               key={label}
-              className="flex-1 bg-[#F7FAF9] rounded-lg px-6 py-4 text-center"
+              className="flex-1 bg-[#F7FAF9] rounded-lg px-4 py-4 text-center"
             >
               <p className="font-semibold text-[14px] mb-1">{label}</p>
               <time dateTime={value} className="font-bold text-[15px]">
@@ -224,6 +235,12 @@ const ProjectTask = () => {
             <p className="font-semibold text-[14px] mb-2">
               Status Transition Log
             </p>
+            <div className="mt-1 mb-1">
+              <div className="bg-[#666666] rounded-md h-10 w-[358px] flex items-center justify-center">
+                <p className="text-white font-medium">To Do → Done</p>
+              </div>
+            </div>
+
             <div className="overflow-y-auto max-h-[140px] pr-2 scrollbar-thin text-[14px]">
               {(status_transition_log || []).map((log, idx) => (
                 <p key={idx} className="mb-2 font-semibold">

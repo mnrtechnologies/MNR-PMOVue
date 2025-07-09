@@ -98,13 +98,27 @@ const jiraIssueSchema = new mongoose.Schema(
     update_inactivity_days: {
       type: String,
     },
+    burnout_flag: {
+      type: String,
+      default:null
+    },
+
+    executive_summary: {
+      type: String,
+      default:null
+    },
+
+    last_ai_interaction_day: {
+      type: Date,
+      default: null,
+    },
 
     // Priority level (e.g. "High", "Medium", "Low")
     priority: {
       type: String,
     },
 
-   user_id: {
+    user_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "credentials",
     },

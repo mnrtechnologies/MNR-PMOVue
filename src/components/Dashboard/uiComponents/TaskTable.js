@@ -38,6 +38,7 @@ const TaskTable = ({ tasks }) => {
             <TableHead>Assignee</TableHead>
             <TableHead>Due Date</TableHead>
             <TableHead>Last Interaction</TableHead>
+            <TableHead>AI Summary</TableHead>
             <TableHead>Action</TableHead>
           </TableRow>
         </TableHeader>
@@ -54,7 +55,8 @@ const TaskTable = ({ tasks }) => {
               <TableCell>{task.assignee}</TableCell>
               <TableCell>{task.dueDate}</TableCell>
               <TableCell>{task.lastInteraction}</TableCell>
-              <TableCell><a href="#" className="text-indigo-600 hover:underline text-sm font-semibold">Detail View</a></TableCell>
+              <TableCell>{task.lastInteraction}</TableCell>
+              <TableCell><a href="/dashboard/insights/jira-details/686e03fe27c0ee6ccab9377a" className="text-indigo-600 hover:underline text-sm font-semibold">Detail View</a></TableCell>
             </TableRow>
           ))}
         </TableBody>

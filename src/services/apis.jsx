@@ -22,7 +22,8 @@ export const endpoints = {
 
 //JIRA ENDPOINTS
 export const jiraendpoints = {
-  GET_ISSUES_API: BASE_URL + "/jira",
+  GET_ISSUES_API: BASE_URL + "/jira/issues",
+  GET_ISSUES_BY_ID_API: BASE_URL + "/jira/issues",
   JIRA_CONNECT_API: BASE_URL + "/jira/connect",
   GET_JIRA_CREDENTIALS_API: BASE_URL + "/jira/credentials",
 }

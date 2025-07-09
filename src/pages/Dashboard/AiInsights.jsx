@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import FilterTab from "../../components/Dashboard/AiInsights/FilterTab";
 import JiraCard from "../../components/Dashboard/AiInsights/JiraCard";
 import GoogleCard from "../../components/Dashboard/AiInsights/GoogleCard";
@@ -7,76 +7,51 @@ import { useDispatch } from "react-redux";
 import { getAllJiraIssues } from "../../services/oprations/jiraAPI";
 
 const Dashboard = () => {
-
-    const dispatch = useDispatch();
-    const [issue, setIssue] = useState(null);
-  
-    useEffect(() => {
-      const fetchIssues = async () => {
-        try {
-          const res = await dispatch(getAllJiraIssues());
-          // console.log("res payload", res);
-          setIssue(res?.[0]);
-          console.log("issue[0]", res);
-        } catch (error) {
-          console.error("Failed to fetch Jira issues:", error);
-        }
-      };
-  
-      fetchIssues();
-    }, [dispatch]);
-  
-  //   if (!issue || Object.keys(issue).length === 0) {
-  //     return <p className="text-center py-10">Loading...</p>;
-  //   }
-
-  //     const {
-  //   key,
-  //   summary,
-  //   assignee,
-  //   priority,
-  //   status,
-  //   ai_priority_score,
-  //   ai_delay_score,
-  //   ai_summary,
-  //   update_inactivity_days,
-  //   days_in_current_status,
-  //   due_date,
-  //   last_status_change_date,
-  //   team,
-  //   original_estimate,
-  //   remaining_estimate,
-  //   time_logged,
-  //   worklog_enterie,
-  //   status_transition_log,
-  //   project_name,
-  //   reporter,
-  // } = issue;
-
-
-
+  const dispatch = useDispatch();
+  const [jiraData, setJiraData] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState("inprogress");
   const [selectedView, setSelectedView] = useState("jira");
 
-  const googleData = Array(12).fill(null).map((_, i) => ({
-    title: `Project ${i + 1}`,
-    status: i % 3 === 0 ? "Complete" : i % 2 === 0 ? "Delay" : "On Track",
-    statusColor: i % 3 === 0 ? "lime-500" : i % 2 === 0 ? "yellow-400" : "blue-800",
-    phase: ["Alpha", "Beta", "Gamma"][i % 3],
-    phaseColor: ["red", "pink", "sky"][i % 3],
-    borderColor: ["red", "pink", "sky"][i % 3],
-    ...common(),
-  }));
+  useEffect(() => {
+    const fetchIssues = async () => {
+      try {
+        const issues = await dispatch(getAllJiraIssues());
+        setJiraData(issues);
+        console.log("jiraData:", issues);
+      } catch (error) {
+        console.error("Failed to fetch Jira issues:", error);
+      }
+    };
 
-  const jiraData = [
-    ...Array(8).fill({ status: "todo" }),
-    ...Array(12).fill({ status: "inprogress" }),
-    ...Array(4).fill({ status: "complete" }),
-  ].map((item, i) => ({
-    id: 300 + i,
-    priority: ["High", "Medium", "Low"][i % 3],
-    ...item,
-  }));
+    fetchIssues();
+  }, [dispatch]);
+
+  if (!jiraData || Object.keys(jiraData).length === 0) {
+    return <p className="text-center py-10">Loading...</p>;
+  }
+
+  const googleData = Array(12)
+    .fill(null)
+    .map((_, i) => ({
+      title: `Project ${i + 1}`,
+      status: i % 3 === 0 ? "Complete" : i % 2 === 0 ? "Delay" : "On Track",
+      statusColor:
+        i % 3 === 0 ? "lime-500" : i % 2 === 0 ? "yellow-400" : "blue-800",
+      phase: ["Alpha", "Beta", "Gamma"][i % 3],
+      phaseColor: ["red", "pink", "sky"][i % 3],
+      borderColor: ["red", "pink", "sky"][i % 3],
+      ...common(),
+    }));
+
+  // const jiraData = [
+  //   ...Array(8).fill({ status: "todo" }),
+  //   ...Array(12).fill({ status: "inprogress" }),
+  //   ...Array(4).fill({ status: "complete" }),
+  // ].map((item, i) => ({
+  //   id: 300 + i,
+  //   priority: ["High", "Medium", "Low"][i % 3],
+  //   ...item,
+  // }));
 
   const filters = [
     { id: "todo", label: "To Do", color: "text-gray-700" },
@@ -91,7 +66,9 @@ const Dashboard = () => {
         inprogress: ["On Track"],
         complete: ["Complete"],
       };
-      return googleData.filter((item) => map[selectedFilter].includes(item.status));
+      return googleData.filter((item) =>
+        map[selectedFilter].includes(item.status)
+      );
     } else {
       return jiraData.filter((item) => item.status === selectedFilter);
     }
@@ -106,14 +83,16 @@ const Dashboard = () => {
       };
       return {
         todo: googleData.filter((d) => map.todo.includes(d.status)).length,
-        inprogress: googleData.filter((d) => map.inprogress.includes(d.status)).length,
-        complete: googleData.filter((d) => map.complete.includes(d.status)).length,
+        inprogress: googleData.filter((d) => map.inprogress.includes(d.status))
+          .length,
+        complete: googleData.filter((d) => map.complete.includes(d.status))
+          .length,
       };
     } else {
       return {
-        todo: jiraData.filter((d) => d.status === "todo").length,
-        inprogress: jiraData.filter((d) => d.status === "inprogress").length,
-        complete: jiraData.filter((d) => d.status === "complete").length,
+        todo: jiraData.filter((d) => d.status === "To Do").length,
+        inprogress: jiraData.filter((d) => d.status === "In Progress").length,
+        complete: jiraData.filter((d) => d.status === "Done").length,
       };
     }
   };
@@ -161,13 +140,21 @@ const Dashboard = () => {
           selectedView === "jira" ? "lg:grid-cols-3" : "lg:grid-cols-4"
         } gap-6`}
       >
-        {filteredCards.map((card, index) =>
+        {/* {filteredCards.map((card, index) =>
           selectedView === "jira" ? (
-            <GoogleCard  key={index} {...card} />
+            <GoogleCard key={index} {...card} />
           ) : (
             <JiraCard key={card.id} {...card} />
+         
           )
-        )}
+        )} */}
+        {selectedView === "google"
+          ? jiraData.map(({ key: issueKey, ...rest }) => (
+              <JiraCard key={rest._id} issueKey={issueKey} {...rest} />
+            ))
+          : filteredCards.map((card, index) => (
+              <GoogleCard key={index} {...card} />
+            ))}
       </div>
     </div>
   );

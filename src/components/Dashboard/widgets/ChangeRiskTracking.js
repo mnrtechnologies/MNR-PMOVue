@@ -51,8 +51,6 @@ const ChangeRiskTracking = () => (
                             {/* Compact headers */}
                             <TableHead className="px-2 py-2">Type</TableHead>
                             <TableHead className="px-2 py-2">Title</TableHead>
-                            <TableHead className="px-2 py-2">Severity</TableHead>
-                            <TableHead className="px-2 py-2">Status</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -66,12 +64,7 @@ const ChangeRiskTracking = () => (
                                     </div>
                                 </TableCell>
                                 <TableCell className="px-2 py-1.5">{item.title}</TableCell>
-                                <TableCell className="px-2 py-1.5">
-                                    <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-semibold ${getSeverityStyles(item.severity)}`}>
-                                        {item.severity}
-                                    </span>
-                                </TableCell>
-                                <TableCell className="px-2 py-1.5">{item.status}</TableCell>
+
                             </TableRow>
                         ))}
                     </TableBody>

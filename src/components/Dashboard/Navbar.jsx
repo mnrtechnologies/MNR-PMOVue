@@ -96,7 +96,7 @@ const Navbar = () => {
     <header className="bg-white px-6 py-3 flex justify-between items-center shadow-sm z-10 w-full">
       {/* Left: Logo + Title */}
       <div className="flex items-center">
-        <div className="flex items-center ">
+        <div className="flex items-center">
           <img src={logo} alt="PortfolioVue Logo" className="h-14 rounded-md" />
         </div>
         <h2 className="text-xl ml-20 font-semibold text-[#012950] hidden sm:block">

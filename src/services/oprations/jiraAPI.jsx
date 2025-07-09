@@ -4,8 +4,46 @@ import { apiConnector } from "../apiConnector";
 import { jiraendpoints } from "../apis";
 import { setJiraCredentials } from "../../slices/jiraDetailSlice";
 
-const { GET_ISSUES_API, JIRA_CONNECT_API ,GET_JIRA_CREDENTIALS_API} = jiraendpoints;
+const { GET_ISSUES_API, GET_ISSUES_BY_ID_API, JIRA_CONNECT_API ,GET_JIRA_CREDENTIALS_API} = jiraendpoints;
 
+// 🔁 GET JIRA ISSUE BY ID
+export function getJiraIssueById(issueId) {
+  return async (dispatch) => {
+    const toastId = toast.loading("Fetching Jira issue...");
+    try {
+
+      const token = JSON.parse(localStorage.getItem("token"));
+
+      const response = await apiConnector(
+        "GET",
+        `${GET_ISSUES_BY_ID_API}/${issueId}`,
+        null,
+        {
+          Authorization: `Bearer ${token}`,
+        }
+      );
+
+      console.log("GET_JIRA_ISSUE_BY_ID RESPONSE:", response);
+
+      const issue = response.data?.issue;
+
+      if (!issue || typeof issue !== "object") {
+        throw new Error("Invalid response format: issue not found");
+      }
+
+      toast.success("Jira issue loaded successfully");
+      return issue;
+    } catch (error) {
+      console.error("GET_JIRA_ISSUE_BY_ID ERROR:", error);
+      toast.error(error?.response?.data?.message || "Failed to fetch Jira issue");
+    } finally {
+      dispatch(setLoading(false));
+      toast.dismiss(toastId);
+    }
+  };
+}
+
+//get jira credentials
 export function fetchJiraCredentials() {
   return async (dispatch) => {
     const toastId = toast.loading("Fetching Jira credentials...");
@@ -46,7 +84,7 @@ export function fetchJiraCredentials() {
   };
 }
 
-
+// connect jira 
 export function jiraConnect(
   { jira_email, jira_domain, jira_api_key },
   onSuccess

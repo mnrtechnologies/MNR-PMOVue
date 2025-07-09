@@ -3,7 +3,35 @@ import jiraissues from "../models/jiraissues.js";
 import User from "../models/User.js";
 import Credential from "../models/jiracredential.js";
 
-// ✅ Get all Jira Issues (optionally filter by user ID, project, etc.)
+// GET issue by id
+export const getJiraIssueById = async (req, res) => {
+  try {
+    const issueId = req.params.id;
+
+    if (!issueId) {
+      return res.status(400).json({ error: "Issue ID is required" });
+    }
+
+    const issue = await jiraissues.findById(issueId);
+
+    if (!issue) {
+      return res.status(404).json({ error: "Jira issue not found" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Jira issue fetched successfully",
+      issue,
+    });
+  } catch (error) {
+    console.error("Error fetching Jira issue by ID:", error.message);
+    return res
+      .status(500)
+      .json({ error: "Server error while fetching Jira issue" });
+  }
+};
+
+// Get all Jira Issues 
 export const getAllJiraIssues = async (req, res) => {
   try {
     const userId = req.user?.id;
@@ -44,6 +72,7 @@ export const getAllJiraIssues = async (req, res) => {
   }
 };
 
+// get jira credentials
 export const getJiraCredentials = async (req, res) => {
   try {
     const userId = req.user?.id;
